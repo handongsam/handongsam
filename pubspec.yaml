@@ -19,10 +19,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.15.6
+  intl: ^0.16.0
   fcharts: ^0.0.11
   webview_flutter: ^0.3.15+1
   cupertino_icons: ^0.1.2
+  google_sign_in: ^4.0.14
+  cloud_firestore: ^0.12.10+2
+  firebase_auth: ^0.15.0+1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 
@@ -48,8 +51,6 @@ flutter:
     - poop4.jpg
     - poop5.jpg
     - poop6.jpg
-    - product1.JPG
-    - product2.jpg
     - shappiness.png
     - happiness1.png
     - frown-face1.png

@@ -4,8 +4,8 @@ import 'login.dart';
 import 'alarm.dart';
 import 'final_report.dart';
 import 'home_after.dart';
-//오세원 바보
-//오세원 바보
+
+
 class HomePage extends StatefulWidget{
   static const routeName = '/homeScreen';
   @override
