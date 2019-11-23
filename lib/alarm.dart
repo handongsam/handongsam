@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:handongsam/survey_inform.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+bool setAlarm = false;
+bool reAlarm = false;
+
+DateTime alarmTime  = DateTime.now();
 TimeOfDay selectedTime = TimeOfDay.now();
 String time = "${selectedTime.hour}:${selectedTime.minute}";
 
-int selectItem = 0;
-String minute = "${selectItem}분 전";
-
+int beforeAlarmTime = 0;
+String minute = "${beforeAlarmTime}분 전";
 
 class Alarm extends StatefulWidget{
   static const routeName = '/alarmScreen';
@@ -35,6 +41,7 @@ class AlarmState extends State<Alarm> {
               IconButton(
                 icon : Icon(Icons.arrow_forward_ios),
                 onPressed: () {
+                  _updateAlarm(context);
                   Navigator.pushNamed(context, SurveyInform.routeName);
                 },
               ),
@@ -47,6 +54,21 @@ class AlarmState extends State<Alarm> {
       ),
     );
   }
+  
+  Future<void> _updateAlarm(BuildContext context) async{
+    await Firestore.instance.collection('User').document(await _getUserID(context)).updateData(
+        {
+          'alarmBefore' : beforeAlarmTime,
+          'alarmReplay' : reAlarm,
+          'alarmSet' : setAlarm,
+          'alarmStamp' : alarmTime,
+        });
+  }
+
+  Future<String> _getUserID(BuildContext context) async{
+    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+    return userId.uid;
+  }
 }
 
 class AlarmSetting extends StatefulWidget{
@@ -55,10 +77,8 @@ class AlarmSetting extends StatefulWidget{
 }
 
 class AlarmSettingState extends State<AlarmSetting>{
-  bool _value1 = false;
-  bool _value2 = false;
-  void _onChanged1(bool value) => setState(() => _value1 = value);
-  void _onChanged2(bool value) => setState(() => _value2 = value);
+  void _onChanged1(bool value) => setState(() => setAlarm = value);
+  void _onChanged2(bool value) => setState(() => reAlarm = value);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +99,7 @@ class AlarmSettingState extends State<AlarmSetting>{
       title :Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Switch(value: _value1, onChanged: _onChanged1),
+          Switch(value: setAlarm, onChanged: _onChanged1),
         ],
       ),
     );
@@ -110,6 +130,8 @@ class AlarmSettingState extends State<AlarmSetting>{
     if(picked!=null)
       setState(() {
         selectedTime = picked;
+        var now = DateTime.now();
+        alarmTime = new DateTime(now.year, now.month, now.day, (selectedTime.hour-9), selectedTime.minute);
         time = "${selectedTime.hour}:${selectedTime.minute}";
       });
   }
@@ -156,8 +178,8 @@ class AlarmSettingState extends State<AlarmSetting>{
       ],
       onSelectedItemChanged: (int value){
         setState(() {
-          selectItem = list[value];
-          minute = "${selectItem}분 전";
+          beforeAlarmTime = list[value];
+          minute = "${beforeAlarmTime}분 전";
         });
       },
     );
@@ -170,7 +192,7 @@ class AlarmSettingState extends State<AlarmSetting>{
       title :Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Switch(value: _value2, onChanged: _onChanged2),
+          Switch(value: reAlarm, onChanged: _onChanged2),
         ],
       ),
     );

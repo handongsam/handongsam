@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'alarm_inform.dart';
-import 'login.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+String uid = "";
+
+String product = "";
+String name = "";
+String phoneNumber = "";
+int bodyFatPercentage = 0;
+final _nameController = TextEditingController();
+final _phoneNumberController = TextEditingController();
+final _bodyFatPercentageController = TextEditingController();
 
 class CreateAccount extends StatefulWidget{
   static const routeName = '/createAccountScreen';
@@ -31,7 +43,9 @@ class CreateAccountState extends State<CreateAccount> {
             children: <Widget>[
               IconButton(
                 icon : Icon(Icons.arrow_forward_ios),
-                onPressed: () {
+                onPressed: () async{
+                  _setValue();
+                  await _makeDocument(context);
                   Navigator.of(context).push( MaterialPageRoute(builder: (context) =>ChooseProduct()));
                 },
               ),
@@ -44,6 +58,28 @@ class CreateAccountState extends State<CreateAccount> {
       ),
     );
   }
+
+  Future<void> _makeDocument(BuildContext context) async{
+    await Firestore.instance.collection('User').document(await _makeUserID(context)).setData(
+        {
+          'fat' : bodyFatPercentage,
+          'name' : name,
+          'phone' : phoneNumber,
+        });
+    Navigator.of(context).pop();
+  }
+
+  Future<String> _makeUserID(BuildContext context) async{
+    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+    uid = userId.uid;
+    return uid;
+  }
+
+  _setValue(){
+    name = _nameController.text.toString();
+    phoneNumber = _phoneNumberController.text.toString();
+    bodyFatPercentage = int.parse(_bodyFatPercentageController.text.toString());
+  }
 }
 
 class MakeTextFieldList extends StatefulWidget{
@@ -54,24 +90,12 @@ class MakeTextFieldList extends StatefulWidget{
 }
 
 class MakeTextFieldListState extends State<MakeTextFieldList>{
-  String id = "";
-  String pw = "";
-  String name = "";
-  String phoneNumber = "";
-  String bodyFatPercentage = "";
-  final _idController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
-  final _bodyFatPercentageController = TextEditingController();
   Widget build(BuildContext context){
     return ListView(
       children: <Widget>[
-        _makeText(context, '아이디','ID',false ,_idController, TextInputType.text, id),
-        _makeText(context,'비밀번호','Password', false, _passwordController,TextInputType.number, pw),
         _makeText(context,'이름','Name', false, _nameController,TextInputType.text, name),
-        _makeText(context,'휴대폰번호 뒷자리','Phoen Number', false, _phoneNumberController,TextInputType.number, phoneNumber),
-        _makeText(context,'체지방률','Fat', false, _bodyFatPercentageController,TextInputType.text, bodyFatPercentage),
+        _makeText(context,'휴대폰번호 뒷자리','Phoen Number', false, _phoneNumberController,TextInputType.text, phoneNumber),
+        _makeText(context,'체지방률(%)','Fat(%)', false, _bodyFatPercentageController,TextInputType.number, bodyFatPercentage),
       ],
     );
   }
@@ -85,7 +109,7 @@ class MakeTextFieldListState extends State<MakeTextFieldList>{
           child:Text(subject),
         ),
         Expanded(
-          child:_makeTextField(context,label,false ,controllers, TextInputType.text, id),
+          child:_makeTextField(context,label,false ,controllers, TextInputType.text, globalValue),
         ),
       ],
     );
@@ -96,8 +120,9 @@ class MakeTextFieldListState extends State<MakeTextFieldList>{
       validator: (value) {
         if (value.isEmpty) {
           return 'Please enter ' + label;
+        }else{
+          return null;
         }
-        return null;
       },
       keyboardType: keyboardTypeThis,
       controller: controllers,
@@ -137,7 +162,8 @@ class ChooseProductState extends State<ChooseProduct> {
             children: <Widget>[
               IconButton(
                 icon : Icon(Icons.arrow_forward_ios),
-                onPressed: (){
+                onPressed: () {
+                  _updateProduct(context, product);
                   Navigator.pushNamed(context, AlarmInform.routeName);
                 },
               ),
@@ -150,6 +176,14 @@ class ChooseProductState extends State<ChooseProduct> {
       ),
     );
   }
+
+  Future<void> _updateProduct(BuildContext context, String productName) async{
+    await Firestore.instance.collection('User').document(uid).updateData(
+        {
+          'product' : product,
+        });
+  }
+
 }
 
 class MakeImageButton extends StatefulWidget{
@@ -165,14 +199,14 @@ class MakeImageButtonState extends State<MakeImageButton> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        MakeProductButton(context,'assets/balance.png'),
+        MakeProductButton(context,'assets/balance.png', 'balance'),
         Divider(),
-        MakeProductButton(context,'assets/intensive.png'),
+        MakeProductButton(context,'assets/intensive.png', 'intensive'),
       ],
     );
   }
 
-  Widget MakeProductButton(BuildContext context, String imagePath){
+  Widget MakeProductButton(BuildContext context, String imagePath, String productName){
     return Container(
       margin : EdgeInsets.all(10.0),
       height:MediaQuery.of(context).size.height/2.8,
@@ -181,6 +215,7 @@ class MakeImageButtonState extends State<MakeImageButton> {
       ),
       child: FlatButton(
         onPressed: () {
+          product = productName;
           //image change
           //Navigator.pushNamed(context, AlarmInform.routeName);
         },
