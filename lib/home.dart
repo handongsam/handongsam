@@ -4,10 +4,9 @@ import 'login.dart';
 import 'alarm.dart';
 import 'final_report.dart';
 import 'home_after.dart';
-import 'login.dart';
-import 'survey.dart';
 import 'survey_inform.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget{
   static const routeName = '/homeScreen';
@@ -42,7 +41,8 @@ class HomePageState extends State<HomePage> {
               ),
               IconButton(
                 icon: Icon(Icons.exit_to_app),
-                onPressed: () {
+                onPressed: () async{
+                  await FirebaseAuth.instance.signOut();
                   Navigator.pushNamed(context, LoginPage.routeName);
                 },
               ),
