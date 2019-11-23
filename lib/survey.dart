@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'home_after.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
-import 'survey_inform.dart';
-
+String TodayDate =" ";
 
 //복용여부 , 스트레스 지수
 class Question1 extends StatefulWidget {
@@ -20,6 +18,8 @@ class Question1State extends State<Question1> {
   double _sliderValue = 0.0;
   bool good = false;
   bool bad = false;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +44,6 @@ class Question1State extends State<Question1> {
             child: Container( child: Row( children: [
               Text("다음"),
               IconButton(
-
                 icon: Icon(
                   Icons.arrow_forward_ios,
                 ),
@@ -100,7 +99,7 @@ class Question1State extends State<Question1> {
 
 
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                             'question1' : 'true',
                         },);
@@ -117,7 +116,7 @@ class Question1State extends State<Question1> {
                           }
                         });
                             Firestore.instance.collection("User")
-                                .document('uid1').collection('survey').document(TodayDate)
+                                .document(CurrentUid).collection('survey').document(TodayDate)
                                 .updateData({
                               'question1' : 'false',
                             },);
@@ -155,7 +154,7 @@ class Question1State extends State<Question1> {
                         }
                         );
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question2' : _sliderValue,
                         },);
@@ -260,7 +259,7 @@ class Question2State extends State<Question2> {
                     children:[
                       InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question3-2' : 1,
                         },);
@@ -275,7 +274,7 @@ class Question2State extends State<Question2> {
                       }
                       );
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-1' : 2,
                       },);
@@ -296,7 +295,7 @@ class Question2State extends State<Question2> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-1' : 3,
                       },);
@@ -311,7 +310,7 @@ class Question2State extends State<Question2> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-1' : 4,
                       },);
@@ -329,7 +328,7 @@ class Question2State extends State<Question2> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-1' : 5,
                       },);
@@ -344,7 +343,7 @@ class Question2State extends State<Question2> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-1' : 6,
                       },);
@@ -433,7 +432,7 @@ class Question3State extends State<Question3> {
                     children:[
                       InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question3-2' : 1,
                         },);
@@ -448,7 +447,7 @@ class Question3State extends State<Question3> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-2' : 2,
                       },);
@@ -466,7 +465,7 @@ class Question3State extends State<Question3> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-2' : 3,
                       },);
@@ -481,7 +480,7 @@ class Question3State extends State<Question3> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-2' : 4,
                       },);
@@ -499,7 +498,7 @@ class Question3State extends State<Question3> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-2' : 5,
                       },);
@@ -514,7 +513,7 @@ class Question3State extends State<Question3> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-2' : 6,
                       },);
@@ -603,7 +602,7 @@ class Question4State extends State<Question4> {
                     children:[
                       InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question3-3' : 1,
                         },);
@@ -620,7 +619,7 @@ class Question4State extends State<Question4> {
                       });
 
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-3' : 2,
                       },);
@@ -638,7 +637,7 @@ class Question4State extends State<Question4> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-3' : 3,
                       },);
@@ -652,7 +651,7 @@ class Question4State extends State<Question4> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-3' : 4,
                       },);
@@ -669,7 +668,7 @@ class Question4State extends State<Question4> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-3' : 5,
                       },);
@@ -683,7 +682,7 @@ class Question4State extends State<Question4> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question3-3' : 6,
                       },);
@@ -783,7 +782,7 @@ class Question5State extends State<Question5> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question4-1' : 1,
                       },);
@@ -797,7 +796,7 @@ class Question5State extends State<Question5> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question4-1' : 2,
                       },);
@@ -816,7 +815,7 @@ class Question5State extends State<Question5> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question4-1' : 3,
                       },);
@@ -830,7 +829,7 @@ class Question5State extends State<Question5> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question4-1' : 4,
                       },);
@@ -848,7 +847,7 @@ class Question5State extends State<Question5> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question4-1' : 5,
                       },);
@@ -862,7 +861,7 @@ class Question5State extends State<Question5> {
                         }
                       });
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question4-1' : 6,
                       },);
@@ -963,7 +962,7 @@ class Question6State extends State<Question6> {
                         }
                         );
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question4-2' : _sliderValue1,
                         },);
@@ -1010,7 +1009,7 @@ class Question6State extends State<Question6> {
                       }
                       );
                       Firestore.instance.collection("User")
-                          .document('uid1').collection('survey').document(TodayDate)
+                          .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
                         'question4-3' : _sliderValue2,
                       },);
@@ -1119,7 +1118,7 @@ class Question7State extends State<Question7> {
                           }
                         });
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question5' : true,
                         },);
@@ -1136,7 +1135,7 @@ class Question7State extends State<Question7> {
                           }
                         });
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question5' : false,
                         },);
@@ -1175,7 +1174,7 @@ class Question7State extends State<Question7> {
 
                         );
                         Firestore.instance.collection("User")
-                            .document('uid1').collection('survey').document(TodayDate)
+                            .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question6' : _sliderValue,
                         },);

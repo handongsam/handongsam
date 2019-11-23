@@ -6,10 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-String CurrentUid;
-
+String CurrentUid = "";
 final FirebaseAuth _auth = FirebaseAuth.instance;
-String currentUser = " ";
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/loginScreen';
@@ -74,14 +72,26 @@ class _LoginPageState extends State<LoginPage> {
       if (authResult.additionalUserInfo.isNewUser) {
         final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
         print("signed in " + user.displayName);
+        CurrentUid = user.uid;
+        //print(CurrentUid);
         Navigator.pushNamed(context, CreateAccount.routeName);
         return user;
       }
       else {
+        CurrentUid = await _makeUserID(context);
+        //print(CurrentUid);
         Navigator.pop(context);
       }
     } catch (e) {
+
       print(e.message);
     }
   }
+
+  Future<String> _makeUserID(BuildContext context) async{
+    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+    uid = userId.uid;
+    return uid;
+  }
+
 }

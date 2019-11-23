@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'login.dart';
 import 'survey.dart';
 
-String TodayDate;
 
 class SurveyInform extends StatefulWidget{
   static const routeName = '/sruveyInformScreen';
@@ -137,10 +137,8 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
             SizedBox(height:40),
             RaisedButton(
               onPressed: () {
-                TodayDate = DateTime.now().toString();
-                Firestore.instance.collection("User")
-                    .document(CurrentUid).collection('survey').document(TodayDate)
-                    .setData({
+                TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+                Firestore.instance.collection("User").document(CurrentUid).collection('survey').document(TodayDate).setData({
                   'question1': true,
                   'question2': 0,
                   'question3-1': 0,
@@ -149,13 +147,11 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
                   'question4-1': 0,
                   'question4-2': 0,
                   'question4-3': 0,
-                  'question5': 0,
+                  'question5': true,
                   'question6': 0,
                   'memo' : 'hi',
                 },);
-
                 Navigator.pushNamed(context, Question1.routeName);
-
               },
               textColor: Colors.white,
               padding: const EdgeInsets.all(0.0),
