@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'create_account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+String CurrentUid;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 String currentUser = " ";
@@ -56,8 +58,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly',],
   );
@@ -84,5 +84,4 @@ class _LoginPageState extends State<LoginPage> {
       print(e.message);
     }
   }
-
 }

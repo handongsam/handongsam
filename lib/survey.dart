@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'home_after.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'login.dart';
+import 'survey_inform.dart';
+
 
 //복용여부 , 스트레스 지수
 class Question1 extends StatefulWidget {
@@ -92,17 +96,32 @@ class Question1State extends State<Question1> {
                           else{
                             good=false;
                           }
-                        });   } ),
+                        });
+
+
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                            'question1' : 'true',
+                        },);
+                            } ),
 
                         InkWell(
-                            child :bad == false ? Image.asset('frown-face1.png', width: 110, height: 110) : Image.asset('sfrown-face.png', width: 110, height: 110), onTap: (){   setState(() {
+                            child :bad == false ? Image.asset('frown-face1.png', width: 110, height: 110) : Image.asset('sfrown-face.png', width: 110, height: 110),
+                            onTap: (){   setState(() {
                           if(bad == false){
                             bad= true;
                           }
                           else{
                             bad=false;
                           }
-                        });   } ),
+                        });
+                            Firestore.instance.collection("User")
+                                .document('uid1').collection('survey').document(TodayDate)
+                                .updateData({
+                              'question1' : 'false',
+                            },);
+                            } ),
 
 
                       ],),),
@@ -135,6 +154,11 @@ class Question1State extends State<Question1> {
                           _sliderValue = newRating;
                         }
                         );
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question2' : _sliderValue,
+                        },);
                       },
                       divisions: 5,
                       label: "$_sliderValue",
@@ -234,7 +258,13 @@ class Question2State extends State<Question2> {
                 Container(child:
                 Row(
                     children:[
-                      InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){} ),
+                      InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question3-2' : 1,
+                        },);
+                        } ),
                       InkWell(child :_value0 == false ? Image.asset('food2.png', width: 130, height: 130) : Image.asset('food2.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
@@ -242,7 +272,18 @@ class Question2State extends State<Question2> {
                         else{
                           _value0=false;
                         }
-                      });   } ),      ]),),
+                      }
+                      );
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-1' : 2,
+                      },);
+                      }
+                      ),
+                    ]
+                ),
+                ),
                 Container(child:
                 Row(
                     children:[
@@ -253,7 +294,14 @@ class Question2State extends State<Question2> {
                         else{
                           _value1=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-1' : 3,
+                      },);
+
+                      } ),
                       InkWell(child :_value2 == false ? Image.asset('food4.png', width: 130, height: 130) : Image.asset('food4.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value2 == false){
                           _value2= true;
@@ -261,7 +309,14 @@ class Question2State extends State<Question2> {
                         else{
                           _value2=false;
                         }
-                      });   } ),         ]),),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-1' : 4,
+                      },);
+
+                      } ),         ]),),
                 Container(child:
                 Row(
                     children:[
@@ -272,7 +327,14 @@ class Question2State extends State<Question2> {
                         else{
                           _value3=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-1' : 5,
+                      },);
+
+                      } ),
                       InkWell(child :_value4 == false ? Image.asset('food6.png', width: 130, height: 130) : Image.asset('food6.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value4 == false){
                           _value4= true;
@@ -280,7 +342,14 @@ class Question2State extends State<Question2> {
                         else{
                           _value4=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-1' : 6,
+                      },);
+
+                      } ),
                     ]),),
 
 
@@ -362,7 +431,14 @@ class Question3State extends State<Question3> {
                 Container(child:
                 Row(
                     children:[
-                      InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){} ),
+                      InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question3-2' : 1,
+                        },);
+
+                      } ),
                       InkWell(child :_value0 == false ? Image.asset('food2.png', width: 130, height: 130) : Image.asset('food2.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
@@ -370,7 +446,14 @@ class Question3State extends State<Question3> {
                         else{
                           _value0=false;
                         }
-                      });   } ),      ]),),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-2' : 2,
+                      },);
+
+                      } ),      ]),),
                 Container(child:
                 Row(
                     children:[
@@ -381,7 +464,14 @@ class Question3State extends State<Question3> {
                         else{
                           _value1=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-2' : 3,
+                      },);
+
+                      } ),
                       InkWell(child :_value2 == false ? Image.asset('food4.png', width: 130, height: 130) : Image.asset('food4.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value2 == false){
                           _value2= true;
@@ -389,7 +479,14 @@ class Question3State extends State<Question3> {
                         else{
                           _value2=false;
                         }
-                      });   } ),         ]),),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-2' : 4,
+                      },);
+
+                      } ),         ]),),
                 Container(child:
                 Row(
                     children:[
@@ -400,7 +497,14 @@ class Question3State extends State<Question3> {
                         else{
                           _value3=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-2' : 5,
+                      },);
+
+                      } ),
                       InkWell(child :_value4 == false ? Image.asset('food6.png', width: 130, height: 130) : Image.asset('food6.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value4 == false){
                           _value4= true;
@@ -408,7 +512,14 @@ class Question3State extends State<Question3> {
                         else{
                           _value4=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-2' : 6,
+                      },);
+
+                      } ),
                     ]),),
 
 
@@ -490,7 +601,15 @@ class Question4State extends State<Question4> {
                 Container(child:
                 Row(
                     children:[
-                      InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){} ),
+                      InkWell(child : Image.asset('food1.png', width: 130, height: 130), onTap: (){
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question3-3' : 1,
+                        },);
+
+
+                      } ),
                       InkWell(child :_value0 == false ? Image.asset('food2.png', width: 130, height: 130) : Image.asset('food2.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
@@ -498,7 +617,15 @@ class Question4State extends State<Question4> {
                         else{
                           _value0=false;
                         }
-                      });   } ),      ]),),
+                      });
+
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-3' : 2,
+                      },);
+
+                      } ),      ]),),
                 Container(child:
                 Row(
                     children:[
@@ -509,7 +636,13 @@ class Question4State extends State<Question4> {
                         else{
                           _value1=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-3' : 3,
+                      },);
+                      } ),
                       InkWell(child :_value2 == false ? Image.asset('food4.png', width: 130, height: 130) : Image.asset('food4.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value2 == false){
                           _value2= true;
@@ -517,7 +650,13 @@ class Question4State extends State<Question4> {
                         else{
                           _value2=false;
                         }
-                      });   } ),         ]),),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-3' : 4,
+                      },);
+                      } ),         ]),),
                 Container(child:
                 Row(
                     children:[
@@ -528,7 +667,13 @@ class Question4State extends State<Question4> {
                         else{
                           _value3=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-3' : 5,
+                      },);
+                      } ),
                       InkWell(child :_value4 == false ? Image.asset('food6.png', width: 130, height: 130) : Image.asset('food6.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value4 == false){
                           _value4= true;
@@ -536,7 +681,13 @@ class Question4State extends State<Question4> {
                         else{
                           _value4=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question3-3' : 6,
+                      },);
+                      } ),
                     ]),),
 
 
@@ -630,7 +781,13 @@ class Question5State extends State<Question5> {
                         else{
                           _value0=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question4-1' : 1,
+                      },);
+                      } ),
                       InkWell(child :_value0 == false ? Image.asset('poop2.jpg',  width: 140, height: 130) :Image.asset('poop2.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
@@ -638,7 +795,13 @@ class Question5State extends State<Question5> {
                         else{
                           _value0=false;
                         }
-                      });   } ),],),),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question4-1' : 2,
+                      },);
+                      } ),],),),
                   Center( child:
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -651,7 +814,13 @@ class Question5State extends State<Question5> {
                         else{
                           _value0=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question4-1' : 3,
+                      },);
+                      } ),
                       InkWell(child :_value0 == false ? Image.asset('poop4.jpg',  width: 140, height: 130) :Image.asset('poop4.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
@@ -659,7 +828,13 @@ class Question5State extends State<Question5> {
                         else{
                           _value0=false;
                         }
-                      });   } ),],),),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question4-1' : 4,
+                      },);
+                      } ),],),),
                   Center(child:  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
 
@@ -671,7 +846,13 @@ class Question5State extends State<Question5> {
                         else{
                           _value0=false;
                         }
-                      });   } ),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question4-1' : 5,
+                      },);
+                      } ),
                       InkWell(child :_value0 == false ? Image.asset('poop6.jpg',  width: 140, height: 130) :Image.asset('poop6.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
@@ -679,7 +860,13 @@ class Question5State extends State<Question5> {
                         else{
                           _value0=false;
                         }
-                      });   } ),],),),
+                      });
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question4-1' : 6,
+                      },);
+                      } ),],),),
 
                 ],),
             ],),),),);
@@ -695,7 +882,9 @@ class Question6 extends StatefulWidget {
 
 class Question6State extends State<Question6> {
   // TODO: Add a variable for Category (104)
-  double _sliderValue = 0.0;
+  double _sliderValue1 = 0.0;
+  double _sliderValue2 = 0.0;
+
   bool good = false;
   bool bad = false;
   @override
@@ -761,7 +950,7 @@ class Question6State extends State<Question6> {
                     Text('배변감은 어떠신가요?'),
                     SizedBox(height: 30),
                     Slider(
-                      value:_sliderValue,
+                      value:_sliderValue1,
                       inactiveColor:Colors.grey[200],
                       activeColor: Colors.indigo[900],
 
@@ -770,12 +959,17 @@ class Question6State extends State<Question6> {
 
                       onChanged: (newRating) {
                         setState(() {
-                          _sliderValue = newRating;
+                          _sliderValue1 = newRating;
                         }
                         );
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question4-2' : _sliderValue1,
+                        },);
                       },
                       divisions: 5,
-                      label: "$_sliderValue",
+                      label: "$_sliderValue1",
                     ),
                     Container(
                       child: Row(
@@ -803,7 +997,7 @@ class Question6State extends State<Question6> {
                   Text('배변 횟수는 어떠신가요?'),
                   SizedBox(height: 30),
                   Slider(
-                    value:_sliderValue,
+                    value:_sliderValue2,
                     inactiveColor:Colors.grey[200],
                     activeColor: Colors.indigo[900],
 
@@ -812,12 +1006,17 @@ class Question6State extends State<Question6> {
 
                     onChanged: (newRating) {
                       setState(() {
-                        _sliderValue = newRating;
+                        _sliderValue2 = newRating;
                       }
                       );
+                      Firestore.instance.collection("User")
+                          .document('uid1').collection('survey').document(TodayDate)
+                          .updateData({
+                        'question4-3' : _sliderValue2,
+                      },);
                     },
                     divisions: 5,
-                    label: "$_sliderValue",
+                    label: "$_sliderValue2",
                   ),
                   Container(
                     //  padding: EdgeInsets.symmetric(horizontal: 15),
@@ -918,7 +1117,14 @@ class Question7State extends State<Question7> {
                           else{
                             good=false;
                           }
-                        });   } ),
+                        });
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question5' : true,
+                        },);
+
+                            } ),
 
                         InkWell(
                             child :bad == false ? Image.asset('frown-face1.png', width: 110, height: 110) : Image.asset('sfrown-face.png', width: 110, height: 110), onTap: (){   setState(() {
@@ -928,7 +1134,13 @@ class Question7State extends State<Question7> {
                           else{
                             bad=false;
                           }
-                        });   } ),
+                        });
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question5' : false,
+                        },);
+                            } ),
 
 
                       ],),),
@@ -960,7 +1172,13 @@ class Question7State extends State<Question7> {
                         setState(() {
                           _sliderValue = newRating;
                         }
+
                         );
+                        Firestore.instance.collection("User")
+                            .document('uid1').collection('survey').document(TodayDate)
+                            .updateData({
+                          'question6' : _sliderValue,
+                        },);
                       },
                       divisions: 10,
                       label: "$_sliderValue",

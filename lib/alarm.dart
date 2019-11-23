@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:handongsam/survey_inform.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -134,6 +135,7 @@ class AlarmSettingState extends State<AlarmSetting>{
         alarmTime = new DateTime(now.year, now.month, now.day, (selectedTime.hour-9), selectedTime.minute);
         time = "${selectedTime.hour}:${selectedTime.minute}";
       });
+
   }
 
 
