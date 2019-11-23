@@ -4,7 +4,10 @@ import 'login.dart';
 import 'alarm.dart';
 import 'final_report.dart';
 import 'home_after.dart';
-
+import 'login.dart';
+import 'survey.dart';
+import 'survey_inform.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget{
   static const routeName = '/homeScreen';
@@ -117,6 +120,23 @@ class MakeBodyState extends State<MakeBody>{
         FlatButton(
           child :Icon(Icons.battery_unknown,size:50.0),
           onPressed: () {
+            TodayDate = DateTime.now().toString();
+            Firestore.instance.collection("User")
+                .document('uid1').collection('survey').document(TodayDate)
+                .setData({
+              'question1': true,
+              'question2': 0,
+              'question3-1': 0,
+              'question3-2':0,
+              'question3-3' : 0,
+              'question4-1': 0,
+              'question4-2': 0,
+              'question4-3': 0,
+              'question5': true,
+              'question6': 0,
+              'memo' : 'hi',
+            },);
+
             Navigator.pushNamed(context, Question1.routeName);
           },
         ),

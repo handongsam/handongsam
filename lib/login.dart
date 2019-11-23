@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'create_account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'create_account.dart';
+
+String CurrentUid;
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: [
@@ -19,6 +21,7 @@ class UserManagement {
       'uid': user.uid,
       'url': user.email==null
     }).then((value) {
+      CurrentUid = user.uid;
       Navigator.of(context).pop();
     }).catchError((e) {
       print(e);
@@ -35,21 +38,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<FirebaseUser> _handleSignIn() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final FirebaseUser currentUser = await _auth.currentUser();
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-    print("signed in " + user.displayName);
-    return user;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +104,11 @@ class MakeTextFieldListState extends State<MakeTextFieldList>{
             FlatButton(
               child: Text('SiGN IN'),
               onPressed: () {
-                Navigator.pop(context);
+               // Navigator.pop(context);
+
+                  _handleSignIn().then((data){
+                  Navigator.pop(context);
+                });
               },
             ),
             SizedBox(width: 20.0),
@@ -129,6 +122,20 @@ class MakeTextFieldListState extends State<MakeTextFieldList>{
         ),
       ],
     );
+  }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<FirebaseUser> _handleSignIn() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+    print("signed in " + user.displayName);
+    return user;
   }
 
   Widget _makeText(BuildContext context, String label, bool flag, TextEditingController controllers, keyboardTypeThis, globalValue){

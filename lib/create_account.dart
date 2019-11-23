@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'alarm_inform.dart';
 import 'login.dart';
 
-
-
 class CreateAccount extends StatefulWidget{
   static const routeName = '/createAccountScreen';
   @override

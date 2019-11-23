@@ -26,9 +26,9 @@ dependencies:
   google_sign_in: ^4.0.14
   cloud_firestore: ^0.12.10+2
   firebase_auth: ^0.15.0+1
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-
 
 dev_dependencies:
   flutter_test:
@@ -39,19 +39,20 @@ flutter:
   assets:
     - assets/intensive.png
     - assets/balance.png
-    - food1.png
-    - food2.png
-    - food3.png
-    - food4.png
-    - food5.png
-    - food6.png
-    - poop1.png
-    - poop2.jpg
-    - poop3.jpg
-    - poop4.jpg
-    - poop5.jpg
-    - poop6.jpg
-    - shappiness.png
-    - happiness1.png
-    - frown-face1.png
-    - sfrown-face.png
+    - assets/food1.png
+    - assets/food2.png
+    - assets/food3.png
+    - assets/food4.png
+    - assets/food5.png
+    - assets/food6.png
+    - assets/poop1.png
+    - assets/poop2.jpg
+    - assets/poop3.jpg
+    - assets/poop4.jpg
+    - assets/poop5.jpg
+    - assets/poop6.jpg
+    - assets/shappiness.png
+    - assets/happiness1.png
+    - assets/frown-face1.png
+    - assets/sfrown-face.png
+

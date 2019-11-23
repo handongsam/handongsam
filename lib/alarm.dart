@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:handongsam/survey_inform.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 TimeOfDay selectedTime = TimeOfDay.now();
 String time = "${selectedTime.hour}:${selectedTime.minute}";
@@ -112,6 +113,7 @@ class AlarmSettingState extends State<AlarmSetting>{
         selectedTime = picked;
         time = "${selectedTime.hour}:${selectedTime.minute}";
       });
+
   }
 
 

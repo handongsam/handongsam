@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "325586951648",
+    "firebase_url": "https://handongsam-111b8.firebaseio.com",
+    "project_id": "handongsam-111b8",
+    "storage_bucket": "handongsam-111b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325586951648:android:ffa4b19b735559357b1f85",
+        "android_client_info": {
+          "package_name": "matalarm.handongsam.handong.edu.handongsam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325586951648-omnk84ofg0br7c0me7i96f4bn33uripn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matalarm.handongsam.handong.edu.handongsam",
+            "certificate_hash": "2ce3c385a5163ef26a8fc6f483a334c4a06fdf5f"
+          }
+        },
+        {
+          "client_id": "325586951648-r4gf28b5pqs8d21nqpptacc3r5s2tesi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALW4y-7TgFk3llQziKWGh8uiDDx25AdL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325586951648-r4gf28b5pqs8d21nqpptacc3r5s2tesi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
