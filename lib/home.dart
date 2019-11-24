@@ -6,7 +6,6 @@ import 'login.dart';
 import 'alarm.dart';
 import 'final_report.dart';
 import 'home_after.dart';
-import 'survey_inform.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -123,25 +122,29 @@ class MakeBodyState extends State<MakeBody>{
         FlatButton(
           child :Icon(Icons.battery_unknown,size:50.0),
           onPressed: () {
-            TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
-            Firestore.instance.collection("User").document(CurrentUid).collection('survey').document(TodayDate).setData({
-              'question1': true,
-              'question2': 0,
-              'question3-1': 0,
-              'question3-2':0,
-              'question3-3' : 0,
-              'question4-1': 0,
-              'question4-2': 0,
-              'question4-3': 0,
-              'question5': true,
-              'question6': 0,
-              'memo' : 'hi',
-            },);
+            _makeSurveyDocument(context);
             Navigator.pushNamed(context, Question1.routeName);
           },
         ),
       ],
     );
+  }
+
+  void _makeSurveyDocument(BuildContext context){
+    TodayDate = DateFormat("yyyy-MM-dd").format(DateTime(2019,11,18)).toString();
+    Firestore.instance.collection("User").document(CurrentUid).collection('survey').document(TodayDate).setData({
+      'question1': true,
+      'question2': 0,
+      'question3-1': 0,
+      'question3-2':0,
+      'question3-3' : 0,
+      'question4-1': 0,
+      'question4-2': 0,
+      'question4-3': 0,
+      'question5': true,
+      'question6': 0,
+      'memo' : 'hi',
+    },);
   }
 
   Widget LowerScreen(){
