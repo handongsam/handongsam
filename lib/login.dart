@@ -45,7 +45,9 @@ class _LoginPageState extends State<LoginPage> {
               RaisedButton(
                 child: Text('GOOGLE Sign In'),
                 onPressed: () async{
-                  _signIn();
+               //   _signIn();
+                  Navigator.pop(context);
+
                 },
               ),
             ],
