@@ -26,7 +26,11 @@ dependencies:
   google_sign_in: ^4.0.14
   cloud_firestore: ^0.12.10+2
   firebase_auth: ^0.15.0+1
-
+  flutter_sparkline: ^0.1.0
+  pie_chart: ^3.1.0
+  bezier_chart: "^1.0.6"
+  flutter_swiper: ^1.1.6
+  fl_chart: ^0.4.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 
@@ -37,22 +41,28 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/intensive.png
-    - assets/balance.png
-    - assets/food1.png
-    - assets/food2.png
-    - assets/food3.png
-    - assets/food4.png
-    - assets/food5.png
-    - assets/food6.png
-    - assets/poop1.png
-    - assets/poop2.jpg
-    - assets/poop3.jpg
-    - assets/poop4.jpg
-    - assets/poop5.jpg
-    - assets/poop6.jpg
-    - assets/shappiness.png
-    - assets/happiness1.png
-    - assets/frown-face1.png
-    - assets/sfrown-face.png
+    - intensive.png
+    - balance.png
+    - food1.png
+    - food2.png
+    - food3.png
+    - food4.png
+    - food5.png
+    - food6.png
+    - select-food1.png
+    - select-food2.png
+    - select-food3.png
+    - select-food4.png
+    - select-food5.png
+    - select_food6.png
+    - poop1.png
+    - poop2.jpg
+    - poop3.jpg
+    - poop4.jpg
+    - poop5.jpg
+    - poop6.jpg
+    - shappiness.png
+    - happiness1.png
+    - frown-face1.png
+    - sfrown-face.png
 
