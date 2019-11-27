@@ -1,12 +1,29 @@
-import 'package:intl/intl.dart';
-
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 
-DateTime fromDate = DateTime(2019, 11, 8);
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import  'survey_record.dart';
+
+String uid = " ";
+DateTime fromDate = DateTime.now().subtract(Duration(days:14));
 DateTime toDate = DateTime.now();
+
+List<int> score = [];
+List <int> breakfast = [], lunch = [], dinner = [];
+List<int> stress = [];
+List <int> poopState = [], poopFeeling=  [], poopCount=[];
+
+Future<String> _makeUserID(BuildContext context) async{
+  FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+  uid = userId.uid;
+  return uid;
+}
+
+
 
 
 class ReportScreen extends StatefulWidget{
@@ -36,6 +53,7 @@ class ReportScreen1 extends StatefulWidget{
   ReportScreen1State createState() => ReportScreen1State();
 }
 
+
 class ReportScreen1State extends State<ReportScreen1> {
   // TODO: Add a variable for Category (104)
   @override
@@ -49,38 +67,7 @@ class ReportScreen1State extends State<ReportScreen1> {
           color: Colors.red,
           height: MediaQuery.of(context).size.height / 3,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: BezierChart(
-            fromDate: fromDate,
-            bezierChartScale: BezierChartScale.WEEKLY,
-            toDate: toDate,
-            selectedDate: toDate,
-            series: [
-              BezierLine(
-                label: "Duty",
-                onMissingValue: (dateTime) {
-                  if (dateTime.day.isEven) {
-                    return 10.0;
-                  }
-                  return 5.0;
-                },
-                data: [
-                  DataPoint<DateTime>(value: 45.5, xAxis: DateTime(2019, 11, 24)),
-                  DataPoint<DateTime>(value: 48.5, xAxis: DateTime(2019, 11, 23)),
-                  DataPoint<DateTime>(value: 44.5, xAxis: DateTime(2019, 11, 22)),
-                  DataPoint<DateTime>(value: 40, xAxis: DateTime(2019, 11, 19)),
-                  DataPoint<DateTime>(value: 43.5, xAxis: DateTime(2019, 11, 18)),
-                ],
-              ),
-            ],
-            config: BezierChartConfig(
-              verticalIndicatorStrokeWidth: 3.0,
-              verticalIndicatorColor: Colors.black26,
-              showVerticalIndicator: true,
-              verticalIndicatorFixedPosition: false,
-              backgroundColor: Colors.red,
-              footerHeight: 50.0,
-            ),
-          ),
+          child: sample2(context),
         ),
       ),
     );
@@ -186,6 +173,7 @@ class ReportScreen2State extends State<ReportScreen2> {
       ),
     );
   }
+
 
 }
 

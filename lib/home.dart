@@ -9,6 +9,16 @@ import 'home_after.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'survey_record.dart';
+import 'user_inform.dart';
+
+DocumentSnapshot documentSnapshot;
+List<bool> complete;
+
+DateTime alarmTime  = DateTime.now();
+int passTime = 1;
+double completePercentage = 0;
+
 
 class HomePage extends StatefulWidget{
   static const routeName = '/homeScreen';
@@ -17,10 +27,32 @@ class HomePage extends StatefulWidget{
 }
 
 class HomePageState extends State<HomePage> {
-  // TODO: Add a variable for Category (104)
-  int maxId = 0;
+  FirebaseUser user;
+  String error;
+
+  void setUser(FirebaseUser user) {
+    setState(() {
+      this.user = user;
+      this.error = null;
+    });
+  }
+
+  void setError(e) {
+    setState(() {
+      this.user = null;
+      this.error = e.toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.currentUser().then(setUser).catchError(setError);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(user.uid);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -63,6 +95,7 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
+
 }
 
 class MakeBody extends StatefulWidget{
@@ -71,6 +104,29 @@ class MakeBody extends StatefulWidget{
 }
 
 class MakeBodyState extends State<MakeBody>{
+  FirebaseUser user;
+  String error;
+
+  void setUser(FirebaseUser user) {
+    setState(() {
+      this.user = user;
+      this.error = null;
+    });
+  }
+
+  void setError(e) {
+    setState(() {
+      this.user = null;
+      this.error = e.toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.currentUser().then(setUser).catchError(setError);
+  }
+
   @override
   Widget build(BuildContext context){
     return Column(
@@ -90,48 +146,115 @@ class MakeBodyState extends State<MakeBody>{
   }
 
   Widget UpperScreen(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text("제품 첫 복용 후", style : TextStyle(fontSize: 20.0),),
-        Text("7일 경과하셨습니다.", style : TextStyle(fontSize: 20.0),),
-        SizedBox(height: 10.0),
-        Text("맛 알람 8:00"),
-        SizedBox(height: 10.0),
-        Bottles(),
-        SizedBox(height: 10.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+    return  StreamBuilder<DocumentSnapshot>(
+      stream: Firestore.instance.collection('User').document(user.uid).snapshots(),
+      builder: (context, snapshot) {
+        documentSnapshot = snapshot.data;
+        final userRecord = UserRecord.fromSnapshot(snapshot.data);
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("이번주 장알기 42%달성     "),
+            Text("제품 첫 복용 후", style : TextStyle(fontSize: 20.0),),
+            Row(
+              children: <Widget>[
+                //Text(userRecord.d, style : TextStyle(fontSize: 20.0),),
+                Text("일 경과하셨습니다.", style : TextStyle(fontSize: 20.0),),
+              ],
+            ),
+            SizedBox(height: 10.0),
+            Text("맛 알람 8:00"),
+            SizedBox(height: 10.0),
+            _buildBottles(context),
+            SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text("이번주 장알기 42%달성     "),
+              ],
+            ),
           ],
-        ),
-      ],
+        );;
+      },
     );
   }
-  Widget Bottles(){
+
+//  Widget UpperScreen(){
+//    return Column(
+//      mainAxisAlignment: MainAxisAlignment.center,
+//      children: <Widget>[
+//        Text("제품 첫 복용 후", style : TextStyle(fontSize: 20.0),),
+//        Text("7일 경과하셨습니다.", style : TextStyle(fontSize: 20.0),),
+//        SizedBox(height: 10.0),
+//        Text("맛 알람 8:00"),
+//        SizedBox(height: 10.0),
+//        _buildBottles(context),
+//        SizedBox(height: 10.0),
+//        Row(
+//          mainAxisAlignment: MainAxisAlignment.end,
+//          children: <Widget>[
+//            Text("이번주 장알기 42%달성     "),
+//          ],
+//        ),
+//      ],
+//    );
+//  }
+
+  Widget _buildBottles(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('User').document(user.uid).collection('survey').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return _buildList(context, snapshot.data.documents);
+      },
+    );
+  }
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(Icons.battery_full, size:50.0),
-        Icon(Icons.battery_full,size:50.0),
-        Icon(Icons.battery_full,size:50.0),
-        Icon(Icons.battery_full,size:50.0),
-        Icon(Icons.battery_full,size:50.0),
-        Icon(Icons.battery_full,size:50.0),
-        FlatButton(
-          child :Icon(Icons.battery_unknown,size:50.0),
-          onPressed: () {
-            _makeSurveyDocument(context);
-            Navigator.pushNamed(context, Question1.routeName);
-          },
-        ),
-      ],
+      //padding: const EdgeInsets.only(top: 20.0),
+      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+    final record = SurveyRecord.fromSnapshot(data);
+    return Padding(
+      //key: ValueKey(record.reference),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+      child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: record.complete == true?
+          SizedBox(
+              width: MediaQuery.of(context).size.width/9,
+              height: MediaQuery.of(context).size.width/8,
+              child:FlatButton(
+                child : Image.asset("water2.png"),
+                onPressed: () {
+                  _makeSurveyDocument(context);
+                  Navigator.pushNamed(context, Question1.routeName);
+                },
+              )
+          ) :
+          SizedBox(
+              width: MediaQuery.of(context).size.width/9,
+              height: MediaQuery.of(context).size.width/8,
+              child:FlatButton(
+                child : Image.asset("water1.png"),
+                onPressed: () {
+                  _makeSurveyDocument(context);
+                  Navigator.pushNamed(context, Question1.routeName);
+                },
+              )
+          )
+      ),
     );
   }
 
   void _makeSurveyDocument(BuildContext context){
-    TodayDate = DateFormat("yyyy-MM-dd").format(DateTime(2019,11,18)).toString();
+    TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     Firestore.instance.collection("User").document(CurrentUid).collection('survey').document(TodayDate).setData({
       'question1': true,
       'question2': 0,
@@ -144,6 +267,7 @@ class MakeBodyState extends State<MakeBody>{
       'question5': true,
       'question6': 0,
       'memo' : 'hi',
+      'complete' : false,
     },);
   }
 
@@ -198,4 +322,5 @@ class MakeBodyState extends State<MakeBody>{
       ],
     );
   }
+
 }
