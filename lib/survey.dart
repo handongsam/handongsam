@@ -1027,7 +1027,7 @@ class Question6State extends State<Question6> {
                         Firestore.instance.collection("User")
                             .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
-                          'question4-2' : _sliderValue1(),
+                          'question4-2' : _sliderValue1.toInt(),
                         },);
                       },
                       divisions: 5,
