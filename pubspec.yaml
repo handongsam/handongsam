@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.16.0
-  fcharts: ^0.0.11
+
   webview_flutter: ^0.3.15+1
   cupertino_icons: ^0.1.2
   google_sign_in: ^4.0.14
@@ -61,6 +61,8 @@ flutter:
     - poop4.jpg
     - poop5.jpg
     - poop6.jpg
+    - water1.png
+    - water2.png
     - shappiness.png
     - happiness1.png
     - frown-face1.png

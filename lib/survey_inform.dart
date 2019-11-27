@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'login.dart';
 import 'survey.dart';
 
-
 class SurveyInform extends StatefulWidget{
   static const routeName = '/sruveyInformScreen';
   @override

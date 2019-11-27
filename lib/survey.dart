@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
 String TodayDate =" ";
 
-
 class Surveypage  extends StatelessWidget {
   static const routeName = '/Surveypage';
 
@@ -127,7 +126,7 @@ class Question1State extends State<Question1> {
                         Firestore.instance.collection("User")
                             .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
-                            'question1' : 'true',
+                            'question1' : true,
                         },);
                             } ),
 
@@ -144,7 +143,7 @@ class Question1State extends State<Question1> {
                             Firestore.instance.collection("User")
                                 .document(CurrentUid).collection('survey').document(TodayDate)
                                 .updateData({
-                              'question1' : 'false',
+                              'question1' : false,
                             },);
                             } ),
 
@@ -182,7 +181,7 @@ class Question1State extends State<Question1> {
                         Firestore.instance.collection("User")
                             .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
-                          'question2' : _sliderValue,
+                          'question2' : _sliderValue.toInt(),
                         },);
                       },
                       divisions: 5,
@@ -1028,7 +1027,7 @@ class Question6State extends State<Question6> {
                         Firestore.instance.collection("User")
                             .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
-                          'question4-2' : _sliderValue1,
+                          'question4-2' : _sliderValue1(),
                         },);
                       },
                       divisions: 5,
@@ -1075,7 +1074,7 @@ class Question6State extends State<Question6> {
                       Firestore.instance.collection("User")
                           .document(CurrentUid).collection('survey').document(TodayDate)
                           .updateData({
-                        'question4-3' : _sliderValue2,
+                        'question4-3' : _sliderValue2.toInt(),
                       },);
                     },
                     divisions: 5,
@@ -1146,7 +1145,6 @@ class Question7State extends State<Question7> {
                   .updateData({
                 'complete' : true,
               },);
-
               Navigator.pushNamed(context, HomePage.routeName);
             }     ,
           ),
@@ -1246,7 +1244,7 @@ class Question7State extends State<Question7> {
                         Firestore.instance.collection("User")
                             .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
-                          'question6' : _sliderValue,
+                          'question6' : _sliderValue.toInt(),
                         },);
                       },
                       divisions: 10,

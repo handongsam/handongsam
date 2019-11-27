@@ -50,13 +50,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
-  fcharts:
-    dependency: "direct main"
-    description:
-      name: fcharts
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.11"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -150,7 +143,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.4"
+    version: "1.6.2"
   pedantic:
     dependency: transitive
     description:
@@ -165,13 +158,14 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+
   quiver:
     dependency: transitive
     description:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.3"
   quiver_hashcode:
     dependency: transitive
     description:
@@ -211,7 +205,7 @@ packages:
       name: string_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.4"
   term_glyph:
     dependency: transitive
     description:

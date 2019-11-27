@@ -158,7 +158,7 @@ class MakeBodyState extends State<MakeBody>{
             Text("제품 첫 복용 후", style : TextStyle(fontSize: 20.0),),
             Row(
               children: <Widget>[
-                Text(userRecord.d, style : TextStyle(fontSize: 20.0),),
+                //Text(userRecord.d, style : TextStyle(fontSize: 20.0),),
                 Text("일 경과하셨습니다.", style : TextStyle(fontSize: 20.0),),
               ],
             ),
