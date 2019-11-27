@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 
 class UserRecord{
   final int alarmBefore;
   final bool alarmReplay;
   final bool alarmSet;
-  final DateTime alarmStamp;
-  final DateTime startTime;
-  final DateTime endTime;
+  final Timestamp alarmStamp;
+  final Timestamp startTime;
+  final Timestamp endTime;
   final DocumentReference reference;
 
   UserRecord.fromMap(Map<String, dynamic> map, {this.reference})

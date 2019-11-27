@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:pie_chart/pie_chart.dart'as pi2;
@@ -17,7 +16,6 @@ class ReportScreen extends StatefulWidget{
 
 class ReportScreenState extends State<ReportScreen> {
   var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
-
 
 
   final fromDate = DateTime(2019, 05, 1);
@@ -43,39 +41,39 @@ class ReportScreenState extends State<ReportScreen> {
   }
 
 
-Widget Defecationhabit(){
+  Widget Defecationhabit(){
     return Center(
-        // child: SimpleLineChart(),
-        child: Container(
+      // child: SimpleLineChart(),
+      child: Container(
         width: 300.0,
         height: 100.0,
         child:  Sparkline(
-            data: data,
-            lineColor: Colors.black,
-            pointsMode: PointsMode.all,
-            pointSize: 4.0,
-            pointColor: Colors.white,
+          data: data,
+          lineColor: Colors.black,
+          pointsMode: PointsMode.all,
+          pointSize: 4.0,
+          pointColor: Colors.white,
 
+        ),
+      ),
+    );
+  }
+  Widget tabController(){
+
+    return  DefaultTabController(
+      length: choices.length,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: choices.map((Choice choice) {
+              return Tab(
+                text: choice.title,
+                //    icon: Icon(choice.icon),
+              );
+            }).toList(),
           ),
         ),
-      );
-  }
- Widget tabController(){
-
-     return  DefaultTabController(
-       length: choices.length,
-       child: Scaffold(
-         appBar: AppBar(
-           bottom: TabBar(
-             isScrollable: true,
-             tabs: choices.map((Choice choice) {
-               return Tab(
-                 text: choice.title,
-             //    icon: Icon(choice.icon),
-               );
-             }).toList(),
-           ),
-         ),
         body: TabBarView(
           children: choices.map((Choice choice) {
             return Padding(
@@ -86,7 +84,7 @@ Widget Defecationhabit(){
         ),
       ),
     );
- }
+  }
 
 }
 
@@ -98,10 +96,10 @@ class Choice {
   final Widget widget;
 }
 
- List<Choice> choices =  <Choice>[
-   Choice(title: 'life', icon: Icons.restaurant, widget: Lifestyle()),
-   Choice(title: 'Defecation', icon: Icons.restaurant, widget: LineChartSample2()),
-   Choice(title: 'stress', icon: Icons.person, widget:Defecationhabit()),
+List<Choice> choices =  <Choice>[
+  Choice(title: 'life', icon: Icons.restaurant, widget: Lifestyle()),
+  Choice(title: 'Defecation', icon: Icons.restaurant, widget: LineChartSample2()),
+  Choice(title: 'stress', icon: Icons.person, widget:Defecationhabit()),
 
 ];
 
@@ -120,9 +118,9 @@ class ChoiceCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-         choice.widget
-          //  Icon(choice.icon, size: 128.0, color: textStyle.color),
-           // Text(choice.title, style: textStyle),
+            choice.widget
+            //  Icon(choice.icon, size: 128.0, color: textStyle.color),
+            // Text(choice.title, style: textStyle),
           ],
         ),
       ),
@@ -186,7 +184,6 @@ class LifestyleState extends State<Lifestyle> {
               ),
               chartType: pi2.ChartType.disc,
             ),
-
           ],
         ),
       ),
@@ -265,33 +262,33 @@ class _LineChartSample2State extends State<LineChartSample2> {
   @override
   Widget build(BuildContext context) {
     return
-          Container(
-            decoration: BoxDecoration(
-               /* borderRadius: const BorderRadius.all(
+      Container(
+        decoration: BoxDecoration(
+          /* borderRadius: const BorderRadius.all(
                   Radius.circular(18),
                 ),*/
-                color: Colors.white),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  right: 12.0, left: 12.0, top: 10, bottom: 10),
+            color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.only(
+              right: 12.0, left: 12.0, top: 10, bottom: 10),
 
-             child: Column(
+          child: Column(
 
-             children: [
+            children: [
 
-               LineChart(
-                 mainData(),
-               ),
-               LineChart(
-                 mainData(),
-               ),
-               LineChart(
-                 mainData(),
-               ),
-             ],
-             ),
-            ),
-          );
+              LineChart(
+                mainData(),
+              ),
+              LineChart(
+                mainData(),
+              ),
+              LineChart(
+                mainData(),
+              ),
+            ],
+          ),
+        ),
+      );
 
 
   }

@@ -14,11 +14,7 @@ import 'user_inform.dart';
 
 DocumentSnapshot documentSnapshot;
 List<bool> complete;
-
-DateTime alarmTime  = DateTime.now();
-int passTime = 1;
-double completePercentage = 0;
-
+int continueDay = 0;
 
 class HomePage extends StatefulWidget{
   static const routeName = '/homeScreen';
@@ -151,67 +147,92 @@ class MakeBodyState extends State<MakeBody>{
       builder: (context, snapshot) {
         documentSnapshot = snapshot.data;
         final userRecord = UserRecord.fromSnapshot(snapshot.data);
+        continueDay = DateTime.now().difference(userRecord.startTime.toDate()).inDays;
+        final alarmHour = userRecord.alarmStamp.toDate().hour+9;
+        final alarmMinute = userRecord.alarmStamp.toDate().minute;
+        final alarmTime = "$alarmHour:$alarmMinute";
         if (!snapshot.hasData) return LinearProgressIndicator();
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("제품 첫 복용 후", style : TextStyle(fontSize: 20.0),),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                //Text(userRecord.d, style : TextStyle(fontSize: 20.0),),
+                Text(continueDay.toString(), style : TextStyle(fontSize: 20.0),),
                 Text("일 경과하셨습니다.", style : TextStyle(fontSize: 20.0),),
               ],
             ),
             SizedBox(height: 10.0),
-            Text("맛 알람 8:00"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("맛 알람 "),
+                Text(alarmTime),
+              ],
+            ),
             SizedBox(height: 10.0),
             _buildBottles(context),
             SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text("이번주 장알기 42%달성     "),
-              ],
+            StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance.collection('User').document(user.uid).collection('survey').snapshots(),
+              builder: (context, snapshot) {
+                int countSurvey = 0;
+                final list =  snapshot.data.documents;
+                for(var document in list){
+                  final record = SurveyRecord.fromSnapshot(document);
+                  if(record.complete==true){
+                    countSurvey = countSurvey+1;
+                  }
+                }
+                final percentage = (countSurvey/7*100).toInt();
+                if (!snapshot.hasData) return LinearProgressIndicator();
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text("이번주 장일기 "),
+                    Text(percentage.toString()),
+                    Container(
+                      child: Text("% 달성        "),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
-        );;
+        );
       },
     );
   }
-
-//  Widget UpperScreen(){
-//    return Column(
-//      mainAxisAlignment: MainAxisAlignment.center,
-//      children: <Widget>[
-//        Text("제품 첫 복용 후", style : TextStyle(fontSize: 20.0),),
-//        Text("7일 경과하셨습니다.", style : TextStyle(fontSize: 20.0),),
-//        SizedBox(height: 10.0),
-//        Text("맛 알람 8:00"),
-//        SizedBox(height: 10.0),
-//        _buildBottles(context),
-//        SizedBox(height: 10.0),
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.end,
-//          children: <Widget>[
-//            Text("이번주 장알기 42%달성     "),
-//          ],
-//        ),
-//      ],
-//    );
-//  }
 
   Widget _buildBottles(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('User').document(user.uid).collection('survey').snapshots(),
       builder: (context, snapshot) {
+        int countSurvey = 0;
+
+        final list =  snapshot.data.documents;
+        for(var document in list){
+          final record = SurveyRecord.fromSnapshot(document);
+          if(record.complete==true){
+            countSurvey = countSurvey+1;
+          }
+        }
         if (!snapshot.hasData) return LinearProgressIndicator();
-        return _buildList(context, snapshot.data.documents);
+        return continueDay>=7? _buildList(context, list.sublist(0,7)) :_buildList(context, list.sublist(7,14)) ;//code change.. after making all document
       },
     );
+//    return StreamBuilder<QuerySnapshot>(
+//      stream: Firestore.instance.collection('User').document(user.uid).collection('survey').snapshots(),
+//      builder: (context, snapshot) {
+//        if (!snapshot.hasData) return LinearProgressIndicator();
+//        return _buildList(context, snapshot.data.documents);
+//      },
+//    );
   }
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return Row(
-      //padding: const EdgeInsets.only(top: 20.0),
+      mainAxisAlignment: MainAxisAlignment.center,
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
@@ -228,7 +249,7 @@ class MakeBodyState extends State<MakeBody>{
           ),
           child: record.complete == true?
           SizedBox(
-              width: MediaQuery.of(context).size.width/9,
+              width: MediaQuery.of(context).size.width/9.5,
               height: MediaQuery.of(context).size.width/8,
               child:FlatButton(
                 child : Image.asset("water2.png"),
@@ -239,7 +260,7 @@ class MakeBodyState extends State<MakeBody>{
               )
           ) :
           SizedBox(
-              width: MediaQuery.of(context).size.width/9,
+              width: MediaQuery.of(context).size.width/9.5,
               height: MediaQuery.of(context).size.width/8,
               child:FlatButton(
                 child : Image.asset("water1.png"),
@@ -252,6 +273,7 @@ class MakeBodyState extends State<MakeBody>{
       ),
     );
   }
+
 
   void _makeSurveyDocument(BuildContext context){
     TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
@@ -271,55 +293,77 @@ class MakeBodyState extends State<MakeBody>{
     },);
   }
 
-  Widget LowerScreen(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(15.0),
-              child:Icon(Icons.brightness_2,size:50.0),
-            ),
-            Expanded(
-              child: Row(
+  Widget LowerScreen() {
+    DateTime oneDaysAgo = DateTime.now().subtract(new Duration(days: 1));
+    String oneDaysAgoDate = DateFormat("yyyy-MM-dd").format(oneDaysAgo).toString();
+    return StreamBuilder<DocumentSnapshot>(
+        stream: Firestore.instance.collection('User').document(user.uid)
+            .collection('survey').document(oneDaysAgoDate)
+            .snapshots(),
+        builder: (context, snapshot) {
+          final surveyRecord = SurveyRecord.fromMap(snapshot.data.data);
+          if (!snapshot.hasData) return LinearProgressIndicator();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("수면시간이 ",  style : TextStyle(fontSize: 20.0)),
-                  Text("2시간 부족",style: TextStyle(fontSize: 20.0, color:Colors.pink,fontWeight:FontWeight.bold)),
-                  Text("합니다.",style: TextStyle(fontSize: 20.0) )
+                  Container(
+                    padding: EdgeInsets.all(15.0),
+                    child: Icon(Icons.brightness_2, size: 50.0),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+
+                        Text("수면시간이 ", style: TextStyle(fontSize: 20.0)),
+                        surveyRecord.question6 < 6 ?
+                        Row(children:[
+                          Text("${6-surveyRecord.question6} 시간 ", style: TextStyle(fontSize: 20.0, color: Colors.pink, fontWeight: FontWeight.bold)),
+                          Text("부족합니다", style: TextStyle(fontSize: 20.0)),
+                        ],
+                        ) : null
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
-        SizedBox(height: 30.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(15.0),
-              child:Icon(Icons.fastfood,size:50.0),
-            ),
-            Expanded(
-              child: Column(
+              SizedBox(height: 30.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("오늘 아침은 든든한",style : TextStyle(fontSize: 20.0)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("한식",style : TextStyle(fontSize: 20.0, color:Colors.blueAccent,fontWeight:FontWeight.bold)),
-                      Text("을 드시는 건 어떠신가요?",style : TextStyle(fontSize: 20.0)),
-                    ],
+                  Container(
+                    padding: EdgeInsets.all(15.0),
+                    child: Icon(Icons.fastfood, size: 50.0),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        // Text("오늘 아침은", style: TextStyle(fontSize: 20.0)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            surveyRecord.question3_1 == 0 ?
+                            Row(
+                              children:[
+                                Text("오늘 ", style: TextStyle(fontSize: 20.0)),
+                                Text("아침", style: TextStyle(fontSize: 20.0, color: Colors.indigo[500], fontWeight: FontWeight.bold)),
+                                Text("을 드시는 건 어떠신가요?", style: TextStyle(fontSize: 20.0))
+                              ],)
+                                : null
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-            ),
-          ],
-        )
-      ],
+              )
+            ],
+          );
+        }
     );
   }
 
