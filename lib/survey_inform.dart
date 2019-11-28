@@ -148,8 +148,12 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
                   'question4-3': 0,
                   'question5': true,
                   'question6': 0,
+                  'complete' : false,
                   'memo' : 'hi',
                 },);
+                Firestore.instance.collection('User').document(CurrentUid).updateData({
+                        'startTime' : DateTime.now(),
+                });
                 Navigator.pushNamed(context, Question1.routeName);
               },
               textColor: Colors.white,

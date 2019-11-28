@@ -45,9 +45,7 @@ class _LoginPageState extends State<LoginPage> {
               RaisedButton(
                 child: Text('GOOGLE Sign In'),
                 onPressed: () async{
-               //   _signIn();
-                  Navigator.pop(context);
-
+                  _signIn();
                 },
               ),
             ],
@@ -72,20 +70,17 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult = await _auth.signInWithCredential(credential);
       if (authResult.additionalUserInfo.isNewUser) {
         final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-        print("signed in " + user.displayName);
-        CurrentUid = user.uid;
-        //print(CurrentUid);
+        print("signed in " + user.uid + user.displayName);
         Navigator.pushNamed(context, CreateAccount.routeName);
         return user;
       }
       else {
         CurrentUid = await _makeUserID(context);
-        //print(CurrentUid);
+        print(authResult.user.uid);
         Navigator.pop(context);
       }
     } catch (e) {
-
-      print(e.message);
+      print(e);
     }
   }
 

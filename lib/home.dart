@@ -185,12 +185,12 @@ class MakeBodyState extends State<MakeBody>{
                     countSurvey = countSurvey+1;
                   }
                 }
-                final percentage = (countSurvey/7*100).toInt();
+                final percentage = (countSurvey/14*100).toInt();
                 if (!snapshot.hasData) return LinearProgressIndicator();
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text("이번주 장일기 "),
+                    Text("장일기 "),
                     Text(percentage.toString()),
                     Container(
                       child: Text("% 달성        "),
@@ -325,7 +325,7 @@ class MakeBodyState extends State<MakeBody>{
                           Text("${6-surveyRecord.question6} 시간 ", style: TextStyle(fontSize: 20.0, color: Colors.pink, fontWeight: FontWeight.bold)),
                           Text("부족합니다", style: TextStyle(fontSize: 20.0)),
                         ],
-                        ) : null
+                        ) : Text("어제의 설문지가 존재하지 않습니다."),
                       ],
                     ),
                   )
@@ -353,7 +353,7 @@ class MakeBodyState extends State<MakeBody>{
                                 Text("아침", style: TextStyle(fontSize: 20.0, color: Colors.indigo[500], fontWeight: FontWeight.bold)),
                                 Text("을 드시는 건 어떠신가요?", style: TextStyle(fontSize: 20.0))
                               ],)
-                                : null
+                                : Text("어제의 설문지가 존재하지 않습니다."),
                           ],
                         ),
                       ],

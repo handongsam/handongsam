@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "325586951648-emnlb54h25o3kshp0dq4bpr656pmpt2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matalarm.handongsam.handong.edu.handongsam",
+            "certificate_hash": "ef280a8afe9541ebf36a3243026005608acd6606"
+          }
+        },
+        {
           "client_id": "325586951648-omnk84ofg0br7c0me7i96f4bn33uripn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

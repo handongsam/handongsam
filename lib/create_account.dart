@@ -64,6 +64,7 @@ class CreateAccountState extends State<CreateAccount> {
           'fat' : bodyFatPercentage,
           'name' : name,
           'phone' : phoneNumber,
+
         });
     Navigator.of(context).pop();
   }
