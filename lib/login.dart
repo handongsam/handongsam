@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:handongsam/home.dart';
 import 'create_account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
               RaisedButton(
                 child: Text('GOOGLE Sign In'),
                 onPressed: () async{
-                  _signIn();
+                  CurrentUid = await _signIn();
                 },
               ),
             ],
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
     scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly',],
   );
 
-  Future<FirebaseUser> _signIn() async {
+  Future<String> _signIn() async {
     try {
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
@@ -70,24 +71,24 @@ class _LoginPageState extends State<LoginPage> {
       AuthResult authResult = await _auth.signInWithCredential(credential);
       if (authResult.additionalUserInfo.isNewUser) {
         final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-        print("signed in " + user.uid + user.displayName);
+        print("new user :  " + user.uid + user.displayName);
         Navigator.pushNamed(context, CreateAccount.routeName);
-        return user;
+        return user.uid;
       }
       else {
-        CurrentUid = await _makeUserID(context);
-        print(authResult.user.uid);
-        Navigator.pop(context);
+        print("befoer use : " + authResult.user.uid);
+        Navigator.pushNamed(context, HomePage.routeName);
+        return authResult.user.uid;
       }
     } catch (e) {
       print(e);
     }
   }
-
-  Future<String> _makeUserID(BuildContext context) async{
-    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
-    uid = userId.uid;
-    return uid;
-  }
+//
+//  Future<String> _makeUserID(BuildContext context) async{
+//    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+//    uid = userId.uid;
+//    return uid;
+//  }
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'alarm_inform.dart';
+import 'package:intl/intl.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,7 +45,12 @@ class CreateAccountState extends State<CreateAccount> {
                 icon : Icon(Icons.arrow_forward_ios),
                 onPressed: () async{
                   _setValue();
-                  await _makeDocument(context);
+                  await _makeUserInform(context);
+
+                  for(var i=0; i<14; i++){
+                    String documentName = DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days:i))).toString();
+                    _makeSurveyDocument(context, documentName);
+                  }
                   Navigator.of(context).push( MaterialPageRoute(builder: (context) =>ChooseProduct()));
                 },
               ),
@@ -58,13 +64,31 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  Future<void> _makeDocument(BuildContext context) async{
+  void _makeSurveyDocument(BuildContext context, String documentName) async{
+    Firestore.instance.collection("User").document(await _makeUserID(context)).collection('survey').document(documentName).setData({
+      'question1': true,
+      'question2': 0,
+      'question3-1': 0,
+      'question3-2':0,
+      'question3-3' : 0,
+      'question4-1': 0,
+      'question4-2': 0,
+      'question4-3': 0,
+      'question5': true,
+      'question6': 0,
+      'memo' : 'hi',
+      'complete' : false,
+    },);
+  }
+
+  Future<void> _makeUserInform(BuildContext context) async{
     await Firestore.instance.collection('User').document(await _makeUserID(context)).setData(
         {
           'fat' : bodyFatPercentage,
           'name' : name,
           'phone' : phoneNumber,
-
+          'startTime' : DateTime.now(),
+          'endTime' : DateTime.now().add(Duration(days:14)),
         });
     Navigator.of(context).pop();
   }

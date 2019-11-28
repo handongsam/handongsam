@@ -29,8 +29,9 @@ class App extends StatelessWidget {
         },
 
         title: 'HandongSam',
-        home: HomePage(),
-        initialRoute: '/login',
+        //home: HomePage(),
+        home: LoginPage(),
+        //initialRoute: '/login',
         onGenerateRoute: _getRoute,
         theme: ThemeData(
           // Define the default brightness and colors.

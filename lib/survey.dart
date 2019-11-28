@@ -6,7 +6,7 @@ import 'login.dart';
 String TodayDate =" ";
 
 class Surveypage  extends StatelessWidget {
-  static const routeName = '/Surveypage';
+  static const routeName = 'Surveypage';
 
   @override
   final controller = PageController(
@@ -15,16 +15,16 @@ class Surveypage  extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return new PageView(
-      controller: controller,
-      children:[
-        Question1(),
-        Question2(),
-        Question3(),
-        Question4(),
-        Question5(),
-        Question6(),
-        Question7(),
-      ]
+        controller: controller,
+        children:[
+          Question1(),
+          Question2(),
+          Question3(),
+          Question4(),
+          Question5(),
+          Question6(),
+          Question7(),
+        ]
 
     );
   }
@@ -51,23 +51,28 @@ class Question1State extends State<Question1> {
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
+          child: Container(
 
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
-            ),
-            Text("뒤로"),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
 
-          ],),),
+              children: [
+                IconButton(
+
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                  ),
+                ),
+                //Text("뒤로"),
+
+              ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
             child: Container( child: Row( children: [
-              Text("다음"),
+              //    Text("다음"),
               IconButton(
                 icon: Icon(
                   Icons.arrow_forward_ios,
@@ -126,24 +131,25 @@ class Question1State extends State<Question1> {
                         Firestore.instance.collection("User")
                             .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
-                            'question1' : true,
+                          'question1' : true,
                         },);
-                            } ),
+                        } ),
 
                         InkWell(
                             child :bad == false ? Image.asset('frown-face1.png', width: 110, height: 110) : Image.asset('sfrown-face.png', width: 110, height: 110),
                             onTap: (){   setState(() {
-                          if(bad == false){
-                            bad= true;
-                          }
-                          else{
-                            bad=false;
-                          }
-                        });
+                              if(bad == false){
+                                bad= true;
+                              }
+                              else{
+                                bad=false;
+                              }
+                            });
                             Firestore.instance.collection("User")
                                 .document(CurrentUid).collection('survey').document(TodayDate)
                                 .updateData({
                               'question1' : false,
+                              'complete' : true,
                             },);
                             } ),
 
@@ -236,7 +242,7 @@ class Question2State extends State<Question2> {
                 Icons.arrow_back_ios,
               ),
             ),
-            Text("뒤로"),
+            //   Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -245,7 +251,7 @@ class Question2State extends State<Question2> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                Text("다음"),
+                //      Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -283,21 +289,21 @@ class Question2State extends State<Question2> {
                 Row(
                     children:[
                       InkWell(child : _value5 == false? Image.asset('food1.png', width: 130, height: 130): Image.asset('select-food1.png', width: 130, height: 130), onTap: (){
-                       setState(() {
-                         if(_value5 == false){
+                        setState(() {
+                          if(_value5 == false){
                             _value5= true;
                           }
-                        else{
-                          _value5=false;
+                          else{
+                            _value5=false;
+                          }
                         }
-                      }
-                      );
+                        );
                         Firestore.instance.collection("User")
                             .document(CurrentUid).collection('survey').document(TodayDate)
                             .updateData({
                           'question3-2' : 1,
                         },);
-                        } ),
+                      } ),
                       InkWell(child :_value0 == false ? Image.asset('food2.png', width: 130, height: 130) : Image.asset('select-food2.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
@@ -419,7 +425,7 @@ class Question3State extends State<Question3> {
                 Icons.arrow_back_ios,
               ),
             ),
-            Text("뒤로"),
+            // Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -428,7 +434,7 @@ class Question3State extends State<Question3> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                Text("다음"),
+                //   Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -601,7 +607,7 @@ class Question4State extends State<Question4> {
                 Icons.arrow_back_ios,
               ),
             ),
-            Text("뒤로"),
+            //    Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -610,7 +616,7 @@ class Question4State extends State<Question4> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                Text("다음"),
+                //   Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -782,7 +788,7 @@ class Question5State extends State<Question5> {
                 Icons.arrow_back_ios,
               ),
             ),
-            Text("뒤로"),
+            //     Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -791,7 +797,7 @@ class Question5State extends State<Question5> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                Text("다음"),
+                //  Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -960,7 +966,7 @@ class Question6State extends State<Question6> {
                 Icons.arrow_back_ios,
               ),
             ),
-            Text("뒤로"),
+            //   Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -969,7 +975,7 @@ class Question6State extends State<Question6> {
         actions: <Widget>[
           InkWell(
             child: Container( child: Row( children: [
-              Text("다음"),
+              //   Text("다음"),
               IconButton(
 
                 icon: Icon(
@@ -980,14 +986,14 @@ class Question6State extends State<Question6> {
             onTap: () {
 
               Navigator.of(context)
-                .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
-                MaterialPageRoute<void>(
+                  .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
+                  MaterialPageRoute<void>(
 
-                  //builder: (BuildContext context) {
-                  builder: (BuildContext context) => Question7(),
+                    //builder: (BuildContext context) {
+                    builder: (BuildContext context) => Question7(),
 
-                )
-            );}     ,
+                  )
+              );}     ,
           ),
 
         ],
@@ -1122,7 +1128,7 @@ class Question7State extends State<Question7> {
                 Icons.arrow_back_ios,
               ),
             ),
-            Text("뒤로"),
+            //     Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -1131,7 +1137,7 @@ class Question7State extends State<Question7> {
         actions: <Widget>[
           InkWell(
             child: Container( child: Row( children: [
-              Text("다음"),
+              Text("완료"),
               IconButton(
 
                 icon: Icon(
@@ -1191,7 +1197,7 @@ class Question7State extends State<Question7> {
                           'question5' : true,
                         },);
 
-                            } ),
+                        } ),
 
                         InkWell(
                             child :bad == false ? Image.asset('frown-face1.png', width: 110, height: 110) : Image.asset('sfrown-face.png', width: 110, height: 110), onTap: (){   setState(() {
@@ -1207,7 +1213,7 @@ class Question7State extends State<Question7> {
                             .updateData({
                           'question5' : false,
                         },);
-                            } ),
+                        } ),
 
 
                       ],),),
@@ -1268,4 +1274,3 @@ class Question7State extends State<Question7> {
       ),
     );
   }}
-

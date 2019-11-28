@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'login.dart';
 import 'survey.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SurveyInform extends StatefulWidget{
   static const routeName = '/sruveyInformScreen';
@@ -110,18 +111,6 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
             Navigator.pop(context);
           },
         ),
-//        actions: <Widget>[
-//          Row(
-//            children: <Widget>[
-//              IconButton(
-//                icon : Icon(Icons.arrow_forward_ios),
-//                onPressed: (){
-//                  //Navigator.pop(context);
-//                },
-//              ),
-//            ],
-//          ),
-//        ],
       ),
       body: Center(
         child: Column(
@@ -135,9 +124,9 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
             Text("7일째" ,style:TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
             SizedBox(height:40),
             RaisedButton(
-              onPressed: () {
+              onPressed: () async{
                 TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
-                Firestore.instance.collection("User").document(CurrentUid).collection('survey').document(TodayDate).setData({
+                Firestore.instance.collection("User").document(await _makeUserID(context)).collection('survey').document(TodayDate).setData({
                   'question1': true,
                   'question2': 0,
                   'question3-1': 0,
@@ -151,9 +140,6 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
                   'complete' : false,
                   'memo' : 'hi',
                 },);
-                Firestore.instance.collection('User').document(CurrentUid).updateData({
-                        'startTime' : DateTime.now(),
-                });
                 Navigator.pushNamed(context, Question1.routeName);
               },
               textColor: Colors.white,
@@ -173,5 +159,11 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
         ),
       ),
     );
+
+  }
+
+  Future<String> _makeUserID(BuildContext context) async{
+    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+    return userId.uid;
   }
 }
