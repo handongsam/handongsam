@@ -5,6 +5,10 @@ import 'create_account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'user_inform.dart';
+import 'home_after.dart';
 
 String CurrentUid = "";
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -72,18 +76,30 @@ class _LoginPageState extends State<LoginPage> {
       if (authResult.additionalUserInfo.isNewUser) {
         final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
         print("new user :  " + user.uid + user.displayName);
+
         Navigator.pushNamed(context, CreateAccount.routeName);
         return user.uid;
       }
       else {
         print("befoer use : " + authResult.user.uid);
-        Navigator.pushNamed(context, HomePage.routeName);
+        Firestore.instance.collection('User').document(authResult.user.uid).get().then((DocumentSnapshot ds) async{
+          var userRecord = UserRecord.fromSnapshot(ds);
+          DateTime endTime = userRecord.endTime.toDate();
+          DateTime nowTime = DateTime.now();
+          if(endTime.year == nowTime.year && endTime.month==nowTime.month && endTime.day==nowTime.day){
+            Navigator.pushNamed(context, FinalHome.routeName);
+          }else{
+            Navigator.pushNamed(context, HomePage.routeName);
+          }
+        });
+
         return authResult.user.uid;
       }
     } catch (e) {
       print(e);
     }
   }
+
 //
 //  Future<String> _makeUserID(BuildContext context) async{
 //    FirebaseUser userId = await FirebaseAuth.instance.currentUser();

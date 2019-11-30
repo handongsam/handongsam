@@ -1,11 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:charts_flutter/flutter.dart'as charts;
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:pie_chart/pie_chart.dart'as pi2;
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fl_chart/fl_chart.dart' ;
+
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'survey_record.dart';
+
+//linechart data definition
+
+List<bool> complete = List<bool>();
+List<int> question2 = List<int>();
+List<int> question3_1 = List<int>();
+List<int> question3_2 = List<int>();
+List<int> question3_3 = List<int>();
+List<int> question4_1 = List<int>();
+List<int> question4_2 = List<int>();
+List<int> question4_3 = List<int>();
+
+
+class finalresult {
+  final int date;
+  final int value;
+
+  finalresult(this.date, this.value);
+}
+
+class question4_1result {
+  final int date;
+  final int value;
+
+  question4_1result(this.date, this.value);
+}
 
 
 class ReportScreen extends StatefulWidget{
@@ -15,64 +46,141 @@ class ReportScreen extends StatefulWidget{
 }
 
 class ReportScreenState extends State<ReportScreen> {
-  var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
+
+  List<charts.Series<finalresult, int>> _finalLineData;
+  List<charts.Series<question4_1result, int>> question4_1list;
+
+  Future<void> getData(BuildContext context) async{
+    Firestore.instance.collection("User").document(await _makeUserID(context)).collection('survey').getDocuments().then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((f) {
+        var survey = SurveyRecord.fromSnapshot(f);
+        question2.add(survey.question2);
+        question3_1.add(survey.question3_1);
+        question3_2.add(survey.question3_2);
+        question3_3.add(survey.question3_3);
+        question4_1.add(survey.question4_1);
+        question4_2.add(survey.question4_2);
+        question4_3.add(survey.question4_3);
+        complete.add(survey.complete);
+      });
+    });
+  }
 
 
-  final fromDate = DateTime(2019, 05, 1);
-  final toDate =  DateTime(2019, 05, 15);
+  Future<String> _makeUserID(BuildContext context) async{
+    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+    var authName = userId.uid.toString();
+    return authName;
+  }
 
-  final date1 =DateTime(2019, 05, 15).subtract(Duration(days: 2));
-  final date2 = DateTime(2019, 05, 15).subtract(Duration(days: 3));
+  //linechart data input
+  _generateData() {
+    final finaldata = [
+      new finalresult(0, 5),
+      new finalresult(1, 25),
+      new finalresult(2, 100),
+      new finalresult(3, 75),
+    ];
+    final question4_1data = [
+      new question4_1result(0, 5),
+      new question4_1result(1, 25),
+      new question4_1result(2, 100),
+      new question4_1result(3, 75),
+    ];
 
 
+    _finalLineData.add(
+      charts.Series(
+        id: 'finaldata',
+        domainFn: (finalresult finals, _) => finals.date,
+        measureFn: (finalresult finals, _) => finals.value,
+        data: finaldata,
+      ),
+    );
 
-  // TODO: Add a variable for Category (104)
-  int maxId = 0;
+    question4_1list.add(
+      charts.Series(
+        id: 'question4_1',
+        domainFn: (question4_1result one, _) => one.date,
+        measureFn: (question4_1result one, _) => one.value,
+        data: question4_1data,
+      ),
+    );
+  }
+
+
+  void initState() {
+    super.initState();
+    _finalLineData = List<charts.Series<finalresult, int>>();
+    question4_1list = List<charts.Series<question4_1result, int>>();
+    _generateData();
+  }
+
+
+  final controller = PageController(
+    initialPage: 1,
+  );
+
   @override
   Widget build(BuildContext context) {
+    getData(context);
+
+    return
+      CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            floating: false,
+            pinned: false,
+            snap: false,
+            expandedHeight: 150.0,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text('Final Graph'),
+            ),
+          ),
+          SliverFixedExtentList(
+            itemExtent: 300.0,
+            delegate: SliverChildListDelegate(
+              [
+                finalGraph(),
+              ],
+            ),
+          ),
+
+          SliverFixedExtentList(
+            itemExtent: 500.0,
+            delegate: SliverChildListDelegate(
+              [
+                tabController(),
+              ],
+            ),
+          ),
+        ],
+      );
+  }
+
+  Widget finalGraph() {
     return Scaffold(
-      appBar: AppBar(
-        //title:
-      ),
-      body:
-      tabController(),
-
-    );
+      body: charts.LineChart(_finalLineData,
+          //   animate: animate,
+          defaultRenderer: new charts.LineRendererConfig(
+              includePoints: true, areaOpacity:0.1 )),);
   }
 
+  Widget tabController() {
+    TabController _tabController;
 
-  Widget Defecationhabit(){
-    return Center(
-      // child: SimpleLineChart(),
-      child: Container(
-        width: 300.0,
-        height: 100.0,
-        child:  Sparkline(
-          data: data,
-          lineColor: Colors.black,
-          pointsMode: PointsMode.all,
-          pointSize: 4.0,
-          pointColor: Colors.white,
-
-        ),
-      ),
-    );
-  }
-  Widget tabController(){
-
-    return  DefaultTabController(
+    return DefaultTabController(
       length: choices.length,
       child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: choices.map((Choice choice) {
-              return Tab(
-                text: choice.title,
-                //    icon: Icon(choice.icon),
-              );
-            }).toList(),
-          ),
+        appBar: TabBar(
+          isScrollable: true,
+          tabs: choices.map((Choice choice) {
+            return Tab(
+              text: choice.title,
+              //    icon: Icon(choice.icon),
+            );
+          }).toList(),
+
         ),
         body: TabBarView(
           children: choices.map((Choice choice) {
@@ -81,12 +189,14 @@ class ReportScreenState extends State<ReportScreen> {
               child: ChoiceCard(choice: choice),
             );
           }).toList(),
+          controller: _tabController,
+
         ),
       ),
     );
   }
-
 }
+
 
 class Choice {
   const Choice({this.title, this.icon, this.widget});
@@ -98,7 +208,7 @@ class Choice {
 
 List<Choice> choices =  <Choice>[
   Choice(title: 'life', icon: Icons.restaurant, widget: Lifestyle()),
-  Choice(title: 'Defecation', icon: Icons.restaurant, widget: LineChartSample2()),
+  Choice(title: 'Defecation', icon: Icons.restaurant, widget: Defecationhabit()),
   Choice(title: 'stress', icon: Icons.person, widget:Defecationhabit()),
 
 ];
@@ -128,17 +238,56 @@ class ChoiceCard extends StatelessWidget {
   }
 }
 
+
+
 class Lifestyle extends StatefulWidget{
   @override
   LifestyleState createState() => LifestyleState();
 }
 
 class LifestyleState extends State<Lifestyle> {
-  Map<String, double> habit = {'eating': 36, 'not eating':10 };
-  Map<String, double> dailyFood = {'탄수화물': 36, '지방':10, '채소':14 };
+  //Map<String, double> habit = {'eating': 36, 'not eating':10 };
+  //Map<String, double> dailyFood = {'탄수화물': 36, '지방':10, '채소':14 };
+  Map<String, double> habit = {'eating': 0, 'not eating': 0};
+  Map<String, double> dailyFood = { '인스턴트' : 0, '단백질' : 0, '탄수화물': 0, '지방': 0, '채소': 0};
+
+  void getHabitDailyFoodDate(List<int> array) {
+    for (var i = 0; i < 15; i++){
+      var food = array[i];
+      if(food == 1){
+        habit['not eating'] += 1;
+      }
+      else if(food!=0){
+        habit['eating'] += 1;
+        if(food == 2){
+          dailyFood['인스턴트'] += 1;
+        }
+        else if(food==3){
+          dailyFood['단백질'] += 1;
+        }
+        else if(food==4){
+          dailyFood['탄수화물'] += 1;
+        }
+        else if(food==5){
+          dailyFood['지방'] += 1;
+        }
+        else if(food==6){
+          dailyFood['채소'] += 1;
+        }
+      }
+    }
+  }
+
+  void getAllHabitDailyFoodDate() {
+    getHabitDailyFoodDate(question3_1);
+    getHabitDailyFoodDate(question3_2);
+    getHabitDailyFoodDate(question3_3);
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    getAllHabitDailyFoodDate();
     return  Center(
       child: Container(
         child : Column(
@@ -191,204 +340,124 @@ class LifestyleState extends State<Lifestyle> {
   }
 }
 
+
+/*Widget Defecationhabit() {
+  return Scaffold(
+    body: charts.LineChart(question4_1list,
+        //   animate: animate,
+        defaultRenderer: new charts.LineRendererConfig(
+            includePoints: true)),);
+}*/
+
+
 class Defecationhabit extends StatefulWidget{
   @override
   DefecationhabitState createState() => DefecationhabitState();
 }
 
 class DefecationhabitState extends State<Defecationhabit> {
-  var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
-  final fromDate = DateTime(2019, 05, 1);
-  final toDate =  DateTime(2019, 05, 15);
 
-  final date1 =DateTime(2019, 05, 15).subtract(Duration(days: 2));
-  final date2 = DateTime(2019, 05, 15).subtract(Duration(days: 3));
+  List<charts.Series<question4_1result, int>> question4_1list;
 
-  @override
-  Widget build(BuildContext context) {
-    return  Center(
-      child: Container(
+  //final bool animate;
 
-        color: Colors.red,
-        height: MediaQuery.of(context).size.height / 3,
-        width: MediaQuery.of(context).size.width,
-        child: BezierChart(
-          fromDate: fromDate,
-          bezierChartScale: BezierChartScale.WEEKLY,
-          toDate: toDate,
-          selectedDate: toDate,
-          series: [
-            BezierLine(
-              label: "Duty",
-              onMissingValue: (dateTime) {
-                if (dateTime.day.isEven) {
-                  return 10.0;
-                }
-                return 5.0;
-              },
-              data: [
-                DataPoint<DateTime>(value: 10, xAxis: date1),
-                DataPoint<DateTime>(value: 50, xAxis: date2),
-              ],
-            ),
-          ],
-          config: BezierChartConfig(
-            verticalIndicatorStrokeWidth: 3.0,
-            verticalIndicatorColor: Colors.black26,
-            showVerticalIndicator: true,
-            verticalIndicatorFixedPosition: false,
-            backgroundColor: Colors.red,
-            footerHeight: 50.0,
-          ),
-        ),
+  //linechart data input
+  _generateData() {
+
+    final question4_1data = [
+      new question4_1result(1, 3),
+      new question4_1result(2, 5),
+      new question4_1result(3, 4),
+      new question4_1result(4, 2),
+    ];
+
+
+    question4_1list.add(
+      charts.Series(
+        id: 'question4_1',
+        domainFn: (question4_1result one, _) => one.date,
+        measureFn: (question4_1result one, _) => one.value,
+        data: question4_1data,
       ),
     );
   }
-}
 
-class LineChartSample2 extends StatefulWidget {
-  @override
-  _LineChartSample2State createState() => _LineChartSample2State();
-}
 
-class _LineChartSample2State extends State<LineChartSample2> {
-  List<Color> gradientColors = [
-    Colors.black26,
-    Colors.black26,
-  ];
-
-  bool showAvg = false;
-
+  void initState() {
+    super.initState();
+    question4_1list = List<charts.Series<question4_1result, int>>();
+    _generateData();
+  }
   @override
   Widget build(BuildContext context) {
-    return
-      Container(
-        decoration: BoxDecoration(
-          /* borderRadius: const BorderRadius.all(
-                  Radius.circular(18),
-                ),*/
-            color: Colors.white),
-        child: Padding(
-          padding: const EdgeInsets.only(
-              right: 12.0, left: 12.0, top: 10, bottom: 10),
-
-          child: Column(
-
-            children: [
-
-              LineChart(
-                mainData(),
-              ),
-              LineChart(
-                mainData(),
-              ),
-              LineChart(
-                mainData(),
-              ),
-            ],
-          ),
-        ),
-      );
-
-
-  }
-
-  LineChartData mainData() {
-    return LineChartData(
-      gridData: FlGridData(
-        show: true,
-        drawVerticalGrid: true,
-        getDrawingHorizontalGridLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalGridLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+          maxWidth: 250.0,
+          minWidth: 100.0,
+          maxHeight: 400.0,
+          minHeight: 100.0
       ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 120,
-          textStyle: TextStyle(
-              color: const Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'MAR';
-              case 5:
-                return 'JUN';
-              case 8:
-                return 'SEP';
-            }
-            return '';
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          textStyle: TextStyle(
-            color: const Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '10k';
-              case 3:
-                return '30k';
-              case 5:
-                return '50k';
-            }
-            return '';
-          },
-          reservedSize: 28,
-          margin: 12,
-        ),
-      ),
-      borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
-          isCurved: false,
-          colors: gradientColors,
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(
-            show: true,
-            dotColor: Colors.black54,
-            dotSize: 2,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            colors:
-            gradientColors.map((color) => color.withOpacity(0.3)).toList(),
-          ),
-        ),
-      ],
+      child:
+
+      Column(
+        mainAxisSize: MainAxisSize.min,
+
+        children:[
+
+          Expanded(
+            child:Container(
+
+              child:charts.LineChart(question4_1list,
+                defaultRenderer: new charts.LineRendererConfig(
+                  includePoints: true,               areaOpacity: 0.8,
+                ),
+                behaviors: [
+                  new charts.ChartTitle(
+                    '배변횟수',
+                    behaviorPosition: charts.BehaviorPosition.top,
+                    titleOutsideJustification: charts.OutsideJustification.middle,
+
+                    innerPadding: 20,
+                    titleStyleSpec: charts.TextStyleSpec(fontSize: 13),    ),
+                ],
+              ),),),
+          SizedBox(height: 10),
+          Expanded(
+            child:Container(
+
+              child:charts.LineChart(question4_1list,
+                defaultRenderer: new charts.LineRendererConfig(
+                  includePoints: true,               areaOpacity: 0.8,
+                ),
+                behaviors: [
+                  new charts.ChartTitle(
+                    '배변감',
+                    behaviorPosition: charts.BehaviorPosition.top,
+                    titleOutsideJustification: charts.OutsideJustification.middle,
+
+                    innerPadding: 20,
+                    titleStyleSpec: charts.TextStyleSpec(fontSize: 13),    ),
+                ],
+              ),),),
+          SizedBox(height: 10),
+          Expanded(
+            child:Container(
+              child:
+              charts.LineChart(question4_1list,
+                defaultRenderer: new charts.LineRendererConfig(
+                  includePoints: true,               areaOpacity: 0.8,
+                ),
+                behaviors: [
+                  new charts.ChartTitle(
+                    '배변상태',
+                    behaviorPosition: charts.BehaviorPosition.top,
+                    titleOutsideJustification: charts.OutsideJustification.middle,
+
+                    innerPadding: 20,
+                    titleStyleSpec: charts.TextStyleSpec(fontSize: 13),    ),
+                ],
+              ),),),
+        ],),
     );
   }
 }

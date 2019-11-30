@@ -44,7 +44,6 @@ class Question1State extends State<Question1> {
   bool good = false;
   bool bad = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

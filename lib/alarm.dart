@@ -16,6 +16,12 @@ String time = "${selectedTime.hour}:${selectedTime.minute}";
 int beforeAlarmTime = 0;
 String minute = "${beforeAlarmTime}분 전";
 
+
+class AlarmArguments{
+  final String fromWhere;
+  AlarmArguments(this.fromWhere);
+}
+
 class Alarm extends StatefulWidget{
   static const routeName = '/alarmScreen';
   @override
@@ -25,11 +31,13 @@ class Alarm extends StatefulWidget{
 class AlarmState extends State<Alarm> {
   @override
   Widget build(BuildContext context) {
+    final AlarmArguments args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon : Icon(Icons.arrow_back_ios),
           onPressed: (){
+            _updateAlarm(context);
             Navigator.pop(context);
           },
         ),
@@ -37,6 +45,7 @@ class AlarmState extends State<Alarm> {
           child : const Text("맛알람 설정"),
         ),
         actions: <Widget>[
+          args.fromWhere == "home"? Container() :
           Row(
             children: <Widget>[
               IconButton(

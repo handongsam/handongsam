@@ -24,7 +24,7 @@ class AlarmInformState extends State<AlarmInform> {
               IconButton(
                 icon : Icon(Icons.arrow_forward_ios),
                 onPressed: () {
-                  Navigator.pushNamed(context, Alarm.routeName);
+                  Navigator.pushNamed(context, Alarm.routeName, arguments:AlarmArguments(" "));
                 },
               ),
             ],

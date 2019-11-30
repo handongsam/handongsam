@@ -125,21 +125,6 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
             SizedBox(height:40),
             RaisedButton(
               onPressed: () async{
-                TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
-                Firestore.instance.collection("User").document(await _makeUserID(context)).collection('survey').document(TodayDate).setData({
-                  'question1': true,
-                  'question2': 0,
-                  'question3-1': 0,
-                  'question3-2':0,
-                  'question3-3' : 0,
-                  'question4-1': 0,
-                  'question4-2': 0,
-                  'question4-3': 0,
-                  'question5': true,
-                  'question6': 0,
-                  'complete' : false,
-                  'memo' : 'hi',
-                },);
                 Navigator.pushNamed(context, Question1.routeName);
               },
               textColor: Colors.white,
@@ -162,8 +147,4 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
 
   }
 
-  Future<String> _makeUserID(BuildContext context) async{
-    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
-    return userId.uid;
-  }
 }
