@@ -23,7 +23,7 @@ class App extends StatelessWidget {
           AlarmInform.routeName : (context) => AlarmInform(),
           Alarm.routeName : (context) =>Alarm(),
           SurveyInform.routeName : (context) =>SurveyInform(),
-          Question1.routeName : (context)=>Question1(),
+          Surveypage.routeName : (context)=>Surveypage(),
           ReportScreen.routeName : (context)=>ReportScreen(),
           FinalHome.routeName : (context) => FinalHome(),
         },

@@ -64,6 +64,8 @@ class HomePageState extends State<HomePage> {
             continueDay = DateTime.now().difference(userRecord.startTime.toDate()).inDays;
             alarmHour = (userRecord.alarmStamp.toDate().hour+9).toString();
             alarmMinute = userRecord.alarmStamp.toDate().minute.toString();
+            if (int.parse(alarmHour)>=24)
+              alarmHour = (int.parse(alarmHour)-24).toString();
             alarmTime = "$alarmHour:$alarmMinute";
           }
           return Scaffold(
@@ -230,22 +232,30 @@ class MakeBodyState extends State<MakeBody>{
             height: MediaQuery.of(context).size.width/7,
             child: data.documentID == DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()?
             FlatButton(
-                child : Stack(
-                  children: <Widget>[
-                    Center(
-                      child:record.complete == true? Image.asset("water2.png") : Image.asset("water1.png") ,
-                    ),
-                    Center(
-                      child:Icon(Icons.add, size:30.0, color: Colors.blueAccent,),
-                    ),
-                  ],
+                child : Container(
+                  width: 100,
+                  height: 100,
+                  child : Stack(
+                    children: <Widget>[
+                      Center(
+                        child:record.complete == true? Image.asset("water2.png") : Image.asset("water1.png") ,
+                      ),
+                      Center(
+                        child:Icon(Icons.add, size:30.0, color: Colors.blueAccent),
+                      ),
+                    ],
+                  ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, Question1.routeName);
+                  Navigator.pushNamed(context, Surveypage.routeName);
                 }
             )
                 :FlatButton(
-              child : record.complete == true? Image.asset("water2.png") : Image.asset("water1.png"),
+              child : Container(
+                width: 100,
+                height: 100,
+                child : record.complete == true? Image.asset("water2.png") : Image.asset("water1.png"),
+              ),
               onPressed: null,
             ),
           )

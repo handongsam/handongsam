@@ -223,9 +223,9 @@ class MakeImageButtonState extends State<MakeImageButton> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        MakeProductButton(context,'assets/balance.png', 'balance'),
+        product=="balance"? MakeProductButton(context,'assets/balance.png', 'balance') : MakeProductButton(context,'assets/balance.png', 'balance'),
         Divider(),
-        MakeProductButton(context,'assets/intensive.png', 'intensive'),
+        product=="intensive"? MakeProductButton(context,'assets/intensive.png', 'intensive') : MakeProductButton(context,'assets/intensive.png', 'intensive'),
       ],
     );
   }
@@ -239,7 +239,9 @@ class MakeImageButtonState extends State<MakeImageButton> {
       ),
       child: FlatButton(
         onPressed: () {
-          product = productName;
+          setState(() {
+            product = productName;
+          });
           //image change
           //Navigator.pushNamed(context, AlarmInform.routeName);
         },

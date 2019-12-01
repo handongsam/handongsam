@@ -3,17 +3,22 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
-String TodayDate =" ";
+import 'package:intl/intl.dart';
+
+String TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+
 
 class Surveypage  extends StatelessWidget {
-  static const routeName = 'Surveypage';
+  static const routeName = '/Surveypage';
 
   @override
   final controller = PageController(
-    initialPage: 1,
+    initialPage: 0,
   );
 
   Widget build(BuildContext context) {
+    print(CurrentUid);
+    print(TodayDate);
     return new PageView(
         controller: controller,
         children:[
@@ -25,7 +30,6 @@ class Surveypage  extends StatelessWidget {
           Question6(),
           Question7(),
         ]
-
     );
   }
 }
@@ -44,34 +48,30 @@ class Question1State extends State<Question1> {
   bool good = false;
   bool bad = false;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container(
+          child: Container( child: Row( children: [
+            IconButton(
 
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+              icon: Icon(
+                Icons.arrow_back_ios,
+              ),
+            ),
+            Text("뒤로"),
 
-              children: [
-                IconButton(
-
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                  ),
-                ),
-                //Text("뒤로"),
-
-              ],),),
+          ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
             child: Container( child: Row( children: [
-              //    Text("다음"),
+              Text("다음"),
               IconButton(
                 icon: Icon(
                   Icons.arrow_forward_ios,
@@ -148,7 +148,6 @@ class Question1State extends State<Question1> {
                                 .document(CurrentUid).collection('survey').document(TodayDate)
                                 .updateData({
                               'question1' : false,
-                              'complete' : true,
                             },);
                             } ),
 
@@ -241,7 +240,7 @@ class Question2State extends State<Question2> {
                 Icons.arrow_back_ios,
               ),
             ),
-            //   Text("뒤로"),
+            Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -250,7 +249,7 @@ class Question2State extends State<Question2> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                //      Text("다음"),
+                Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -424,7 +423,7 @@ class Question3State extends State<Question3> {
                 Icons.arrow_back_ios,
               ),
             ),
-            // Text("뒤로"),
+            Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -433,7 +432,7 @@ class Question3State extends State<Question3> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                //   Text("다음"),
+                Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -606,7 +605,7 @@ class Question4State extends State<Question4> {
                 Icons.arrow_back_ios,
               ),
             ),
-            //    Text("뒤로"),
+            Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -615,7 +614,7 @@ class Question4State extends State<Question4> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                //   Text("다음"),
+                Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -787,7 +786,7 @@ class Question5State extends State<Question5> {
                 Icons.arrow_back_ios,
               ),
             ),
-            //     Text("뒤로"),
+            Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -796,7 +795,7 @@ class Question5State extends State<Question5> {
         actions: <Widget>[
           InkWell(
               child: Container( child: Row( children: [
-                //  Text("다음"),
+                Text("다음"),
                 IconButton(
 
                   icon: Icon(
@@ -965,7 +964,7 @@ class Question6State extends State<Question6> {
                 Icons.arrow_back_ios,
               ),
             ),
-            //   Text("뒤로"),
+            Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -974,7 +973,7 @@ class Question6State extends State<Question6> {
         actions: <Widget>[
           InkWell(
             child: Container( child: Row( children: [
-              //   Text("다음"),
+              Text("다음"),
               IconButton(
 
                 icon: Icon(
@@ -1127,7 +1126,7 @@ class Question7State extends State<Question7> {
                 Icons.arrow_back_ios,
               ),
             ),
-            //     Text("뒤로"),
+            Text("뒤로"),
 
           ],),),
           onTap: () =>  Navigator.of(context).pop()            ,
@@ -1136,7 +1135,7 @@ class Question7State extends State<Question7> {
         actions: <Widget>[
           InkWell(
             child: Container( child: Row( children: [
-              Text("완료"),
+              Text("다음"),
               IconButton(
 
                 icon: Icon(

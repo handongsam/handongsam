@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:charts_flutter/flutter.dart'as charts;
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart'as pi2;
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -11,7 +12,9 @@ import 'package:fl_chart/fl_chart.dart' ;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'survey_record.dart';
+import 'user_inform.dart';
 
+int dataFinishFlag = 0;
 //linechart data definition
 
 List<bool> complete = List<bool>();
@@ -22,22 +25,42 @@ List<int> question3_3 = List<int>();
 List<int> question4_1 = List<int>();
 List<int> question4_2 = List<int>();
 List<int> question4_3 = List<int>();
+List<String> documentID = List<String>();
 
-
-class finalresult {
-  final int date;
-  final int value;
-
-  finalresult(this.date, this.value);
+class FinalResult {
+  final DateTime time;
+  final int totalScore;
+  FinalResult(this.time, this.totalScore);
 }
 
 class question4_1result {
-  final int date;
+  final DateTime date;
   final int value;
 
   question4_1result(this.date, this.value);
 }
 
+
+class question4_2result {
+  final DateTime date;
+  final int value;
+
+  question4_2result(this.date, this.value);
+}
+
+class question4_3result {
+  final DateTime date;
+  final int value;
+
+  question4_3result(this.date, this.value);
+}
+
+class question2result {
+  final DateTime date;
+  final int value;
+
+  question2result(this.date, this.value);
+}
 
 class ReportScreen extends StatefulWidget{
   static const routeName = '/reportScreen';
@@ -46,14 +69,85 @@ class ReportScreen extends StatefulWidget{
 }
 
 class ReportScreenState extends State<ReportScreen> {
+  Future<String> _makeUserID(BuildContext context) async{
+    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
+    var authName = userId.uid.toString();
+    return authName;
+  }
 
-  List<charts.Series<finalresult, int>> _finalLineData;
+
+
+  @override
+  void initState() {
+    super.initState();
+    getData(context);
+  }
+
+  final controller = PageController(
+    initialPage: 1,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: getData(context),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(
+                  child: CircularProgressIndicator()
+              );
+            default:
+              return makeCustomScrollView(context);
+          }
+        }
+    );
+  }
+
+  Widget makeCustomScrollView(BuildContext context){
+    return  CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          floating: false,
+          pinned: false,
+          snap: false,
+          expandedHeight: 150.0,
+          flexibleSpace: const FlexibleSpaceBar(
+            title: Text('Final Graph'),
+          ),
+        ),
+        SliverFixedExtentList(
+          itemExtent: 300.0,
+          delegate: SliverChildListDelegate(
+            [
+              finalGraph(),
+            ],
+          ),
+        ),
+
+        SliverFixedExtentList(
+          itemExtent: 500.0,
+          delegate: SliverChildListDelegate(
+            [
+              tabController(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   List<charts.Series<question4_1result, int>> question4_1list;
+  List<charts.Series<question4_1result, int>> question4_2list;
+  List<charts.Series<question4_1result, int>> question4_3list;
+  List<charts.Series<question2result, int>> question2_list;
 
-  Future<void> getData(BuildContext context) async{
+  Future<int> getData(BuildContext context) async{
     Firestore.instance.collection("User").document(await _makeUserID(context)).collection('survey').getDocuments().then((QuerySnapshot snapshot) {
       snapshot.documents.forEach((f) {
         var survey = SurveyRecord.fromSnapshot(f);
+        documentID.add(survey.id);
         question2.add(survey.question2);
         question3_1.add(survey.question3_1);
         question3_2.add(survey.question3_2);
@@ -64,106 +158,62 @@ class ReportScreenState extends State<ReportScreen> {
         complete.add(survey.complete);
       });
     });
+    return 1;
   }
 
-
-  Future<String> _makeUserID(BuildContext context) async{
-    FirebaseUser userId = await FirebaseAuth.instance.currentUser();
-    var authName = userId.uid.toString();
-    return authName;
+  Widget finalGraph() {
+    _createSampleData();
+    return Scaffold(
+        body: charts.TimeSeriesChart(
+            _finalLineData,
+            defaultRenderer: new charts.LineRendererConfig(
+                includePoints: true, areaOpacity:0.1
+            )
+        )
+    );
   }
 
-  //linechart data input
-  _generateData() {
-    final finaldata = [
-      new finalresult(0, 5),
-      new finalresult(1, 25),
-      new finalresult(2, 100),
-      new finalresult(3, 75),
-    ];
-    final question4_1data = [
-      new question4_1result(0, 5),
-      new question4_1result(1, 25),
-      new question4_1result(2, 100),
-      new question4_1result(3, 75),
-    ];
-
+  List<charts.Series<FinalResult, DateTime>> _finalLineData = List<charts.Series<FinalResult, DateTime>> ();
+  void _createSampleData() {
+    List<FinalResult> data = List<FinalResult> ();
+    for(int i=0; i<14; i++){
+      DateTime nowDate =  DateFormat("yyyy-MM-dd").parse(documentID[i]);
+      double totalScore =0;
+      totalScore =getTotalScore(i,totalScore);
+      data.add(new FinalResult(nowDate, totalScore.toInt()));
+    }
 
     _finalLineData.add(
       charts.Series(
         id: 'finaldata',
-        domainFn: (finalresult finals, _) => finals.date,
-        measureFn: (finalresult finals, _) => finals.value,
-        data: finaldata,
-      ),
-    );
-
-    question4_1list.add(
-      charts.Series(
-        id: 'question4_1',
-        domainFn: (question4_1result one, _) => one.date,
-        measureFn: (question4_1result one, _) => one.value,
-        data: question4_1data,
+        domainFn: (FinalResult finals, _) => finals.time,
+        measureFn: (FinalResult finals, _) => finals.totalScore,
+        data: data,
       ),
     );
   }
 
-
-  void initState() {
-    super.initState();
-    _finalLineData = List<charts.Series<finalresult, int>>();
-    question4_1list = List<charts.Series<question4_1result, int>>();
-    _generateData();
+  double getTotalScore(int i, double totalScore){
+    totalScore += question2[i]*3.333;
+    getQuestion3Score(i,totalScore, question3_1);
+    getQuestion3Score(i,totalScore, question3_2);
+    getQuestion3Score(i,totalScore, question3_3);
+    totalScore += 20-(3-question4_1[i]).abs()*3.333;
+    totalScore += question4_2[i]*3.333;
+    if(question4_3[i]==1||question4_3[i]==2)
+      totalScore+= 20;
+    else
+      totalScore+=0;
+    return totalScore;
   }
 
-
-  final controller = PageController(
-    initialPage: 1,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    getData(context);
-
-    return
-      CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            floating: false,
-            pinned: false,
-            snap: false,
-            expandedHeight: 150.0,
-            flexibleSpace: const FlexibleSpaceBar(
-              title: Text('Final Graph'),
-            ),
-          ),
-          SliverFixedExtentList(
-            itemExtent: 300.0,
-            delegate: SliverChildListDelegate(
-              [
-                finalGraph(),
-              ],
-            ),
-          ),
-
-          SliverFixedExtentList(
-            itemExtent: 500.0,
-            delegate: SliverChildListDelegate(
-              [
-                tabController(),
-              ],
-            ),
-          ),
-        ],
-      );
-  }
-
-  Widget finalGraph() {
-    return Scaffold(
-      body: charts.LineChart(_finalLineData,
-          //   animate: animate,
-          defaultRenderer: new charts.LineRendererConfig(
-              includePoints: true, areaOpacity:0.1 )),);
+  void getQuestion3Score(int i, double totalScore, List<int> q3){
+    if(q3[i]==1 || q3[i]==2)
+      totalScore += 1;
+    else if(q3[i]==4 || q3[i]==5)
+      totalScore += 10;
+    else
+      totalScore += 20;
   }
 
   Widget tabController() {
@@ -209,7 +259,7 @@ class Choice {
 List<Choice> choices =  <Choice>[
   Choice(title: 'life', icon: Icons.restaurant, widget: Lifestyle()),
   Choice(title: 'Defecation', icon: Icons.restaurant, widget: Defecationhabit()),
-  Choice(title: 'stress', icon: Icons.person, widget:Defecationhabit()),
+  Choice(title: 'stress', icon: Icons.person, widget:StressEvaluation()),
 
 ];
 
@@ -238,8 +288,6 @@ class ChoiceCard extends StatelessWidget {
   }
 }
 
-
-
 class Lifestyle extends StatefulWidget{
   @override
   LifestyleState createState() => LifestyleState();
@@ -252,7 +300,7 @@ class LifestyleState extends State<Lifestyle> {
   Map<String, double> dailyFood = { '인스턴트' : 0, '단백질' : 0, '탄수화물': 0, '지방': 0, '채소': 0};
 
   void getHabitDailyFoodDate(List<int> array) {
-    for (var i = 0; i < 15; i++){
+    for (var i = 0; i < 14; i++){
       var food = array[i];
       if(food == 1){
         habit['not eating'] += 1;
@@ -357,37 +405,68 @@ class Defecationhabit extends StatefulWidget{
 
 class DefecationhabitState extends State<Defecationhabit> {
 
-  List<charts.Series<question4_1result, int>> question4_1list;
-
+  // List<charts.Series<question4_1result, DateTime>> question4_1list;
   //final bool animate;
 
   //linechart data input
-  _generateData() {
+  List<charts.Series<question4_1result, DateTime>> _createQuestion4_1Data() {
+    List<question4_1result> question4_1data = List<question4_1result> ();
 
-    final question4_1data = [
-      new question4_1result(1, 3),
-      new question4_1result(2, 5),
-      new question4_1result(3, 4),
-      new question4_1result(4, 2),
+
+    for (int i = 0; i < 14; i++) {
+      DateTime nowDate=  DateFormat("yyyy-MM-dd").parse(documentID[i]);
+      question4_1data.add(new question4_1result(nowDate, question4_1[i].toInt()));
+    }
+
+    return [
+      new charts.Series<question4_1result, DateTime>(
+        id: 'question4-1',
+        domainFn: (question4_1result sales, _) => sales.date,
+        measureFn: (question4_1result sales, _) => sales.value,
+        data: question4_1data,
+      )
     ];
 
+  }
+  List<charts.Series<question4_1result, DateTime>> _createQuestion4_2Data() {
+    List<question4_1result> question4_1data = List<question4_1result> ();
 
-    question4_1list.add(
-      charts.Series(
-        id: 'question4_1',
-        domainFn: (question4_1result one, _) => one.date,
-        measureFn: (question4_1result one, _) => one.value,
+
+    for (int i = 0; i < 14; i++) {
+      DateTime nowDate=  DateFormat("yyyy-MM-dd").parse(documentID[i]);
+      question4_1data.add(new question4_1result(nowDate, question4_2[i].toInt()));
+    }
+
+    return [
+      new charts.Series<question4_1result, DateTime>(
+        id: 'question4-2',
+        domainFn: (question4_1result sales, _) => sales.date,
+        measureFn: (question4_1result sales, _) => sales.value,
         data: question4_1data,
-      ),
-    );
+      )
+    ];
+
   }
+  List<charts.Series<question4_1result, DateTime>> _createQuestion4_3Data() {
+    List<question4_1result> question4_1data = List<question4_1result> ();
 
 
-  void initState() {
-    super.initState();
-    question4_1list = List<charts.Series<question4_1result, int>>();
-    _generateData();
+    for (int i = 0; i < 14; i++) {
+      DateTime nowDate=  DateFormat("yyyy-MM-dd").parse(documentID[i]);
+      question4_1data.add(new question4_1result(nowDate, question4_3[i].toInt()));
+    }
+
+    return [
+      new charts.Series<question4_1result, DateTime>(
+        id: 'question4-3',
+        domainFn: (question4_1result sales, _) => sales.date,
+        measureFn: (question4_1result sales, _) => sales.value,
+        data: question4_1data,
+      )
+    ];
+
   }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -407,7 +486,10 @@ class DefecationhabitState extends State<Defecationhabit> {
           Expanded(
             child:Container(
 
-              child:charts.LineChart(question4_1list,
+              child: charts.TimeSeriesChart(
+
+                _createQuestion4_1Data(),
+
                 defaultRenderer: new charts.LineRendererConfig(
                   includePoints: true,               areaOpacity: 0.8,
                 ),
@@ -425,7 +507,9 @@ class DefecationhabitState extends State<Defecationhabit> {
           Expanded(
             child:Container(
 
-              child:charts.LineChart(question4_1list,
+              child: charts.TimeSeriesChart(
+
+                _createQuestion4_2Data(),
                 defaultRenderer: new charts.LineRendererConfig(
                   includePoints: true,               areaOpacity: 0.8,
                 ),
@@ -443,7 +527,8 @@ class DefecationhabitState extends State<Defecationhabit> {
           Expanded(
             child:Container(
               child:
-              charts.LineChart(question4_1list,
+              charts.TimeSeriesChart(
+                _createQuestion4_3Data(),
                 defaultRenderer: new charts.LineRendererConfig(
                   includePoints: true,               areaOpacity: 0.8,
                 ),
@@ -459,5 +544,56 @@ class DefecationhabitState extends State<Defecationhabit> {
               ),),),
         ],),
     );
+  }
+}
+
+class StressEvaluation extends StatefulWidget{
+  @override
+  StressEvaluationState createState() => StressEvaluationState();
+}
+
+class StressEvaluationState extends State<StressEvaluation> {
+
+  List<charts.Series<question2result, DateTime>> _createQuestion2Data() {
+    List<question2result> question4_1data = List<question2result>();
+
+
+    for (int i = 0; i < 14; i++) {
+      DateTime nowDate = DateFormat("yyyy-MM-dd").parse(documentID[i]);
+      question4_1data.add(new question2result(nowDate, question2[i].toInt()));
+    }
+
+    return [
+      new charts.Series<question2result, DateTime>(
+        id: 'question2',
+        domainFn: (question2result sales, _) => sales.date,
+        measureFn: (question2result sales, _) => sales.value,
+        data: question4_1data,
+      )
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      Expanded(
+        child: Container(
+
+          child:  charts.TimeSeriesChart(_createQuestion2Data(),
+            defaultRenderer: new charts.LineRendererConfig(
+              includePoints: true, areaOpacity: 0.8,
+            ),
+            behaviors: [
+              new charts.ChartTitle(
+                '스트레스 지수',
+                behaviorPosition: charts.BehaviorPosition.top,
+                titleOutsideJustification: charts.OutsideJustification.middle,
+
+                innerPadding: 30,
+                titleStyleSpec: charts.TextStyleSpec(fontSize: 15),),
+            ],
+          ),),
+
+      );
   }
 }
