@@ -31,7 +31,6 @@ class HomePage extends StatefulWidget{
 class HomePageState extends State<HomePage> {
   FirebaseUser user;
   String error;
-
   void setUser(FirebaseUser user) {
     setState(() {
       this.user = user;
@@ -82,6 +81,12 @@ class HomePageState extends State<HomePage> {
               actions: <Widget>[
                 Row(
                   children: <Widget>[
+                    IconButton(
+                      icon:Icon(Icons.calendar_today),
+                      onPressed: () {
+                        Navigator.pushNamed(context, ReportScreen.routeName);
+                      },
+                    ),
                     IconButton(
                       icon: Icon(Icons.description),
                       onPressed: () {
@@ -148,7 +153,7 @@ class MakeBodyState extends State<MakeBody>{
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(continueDay.toString(), style : TextStyle(fontSize: 20.0),),
+            Text((continueDay+1).toString(), style : TextStyle(fontSize: 20.0),),
             Text("일 경과하셨습니다.", style : TextStyle(fontSize: 20.0),),
           ],
         ),
@@ -227,38 +232,30 @@ class MakeBodyState extends State<MakeBody>{
       //key: ValueKey(record.reference),
       padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 0.0),
       child:Container(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width/8,
-            height: MediaQuery.of(context).size.width/7,
-            child: data.documentID == DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()?
-            FlatButton(
-                child : Container(
-                  width: 100,
-                  height: 100,
-                  child : Stack(
-                    children: <Widget>[
-                      Center(
-                        child:record.complete == true? Image.asset("water2.png") : Image.asset("water1.png") ,
-                      ),
-                      Center(
-                        child:Icon(Icons.add, size:30.0, color: Colors.blueAccent),
-                      ),
-                    ],
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width/8,
+          height: MediaQuery.of(context).size.width/7,
+          child: data.documentID == DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()?
+          InkWell(
+              child : Stack(
+                children: <Widget>[
+                  Center(
+                    child:record.complete == true? Image.asset("water2.png") : Image.asset("water1.png") ,
                   ),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, Surveypage.routeName);
-                }
-            )
-                :FlatButton(
-              child : Container(
-                width: 100,
-                height: 100,
-                child : record.complete == true? Image.asset("water2.png") : Image.asset("water1.png"),
+                  Center(
+                    child:Icon(Icons.add, size:50.0, color: Colors.blueAccent),
+                  ),
+                ],
               ),
-              onPressed: null,
-            ),
-          )
+              onTap: (){
+                Navigator.pushNamed(context, Surveypage.routeName);
+              })
+              :
+          InkWell(
+            child : record.complete == true? Image.asset("water2.png") : Image.asset("water1.png"),
+            onTap: null,
+          ),
+        ),
       ),
     );
   }
@@ -270,8 +267,14 @@ class MakeBodyState extends State<MakeBody>{
     return StreamBuilder<DocumentSnapshot>(
         stream: Firestore.instance.collection('User').document(uerUid).collection('survey').document(oneDaysAgoDate).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return Text("Fighting");
+          if (snapshot.data.data == null) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset("poop.png", height: 50.0, width: 50.0,),
+                Text("앞으로 우리 함께 열심히 해보아요", style : TextStyle(fontSize: 20.0),),
+              ],
+            );
           }
           else{
             SurveyRecordSub surveyRecordSub = SurveyRecordSub.fromMap(snapshot.data.data);

@@ -76,7 +76,7 @@ class CreateAccountState extends State<CreateAccount> {
       'question4-3': 0,
       'question5': true,
       'question6': 0,
-      'memo' : 'hi',
+      'memo' : ' ',
       'complete' : false,
     },);
   }
@@ -223,9 +223,9 @@ class MakeImageButtonState extends State<MakeImageButton> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        product=="balance"? MakeProductButton(context,'assets/balance.png', 'balance') : MakeProductButton(context,'assets/balance.png', 'balance'),
+        product=="balance"? MakeProductButton(context,'sbalance.png', 'balance') : MakeProductButton(context,'balance.jpg', 'balance'),
         Divider(),
-        product=="intensive"? MakeProductButton(context,'assets/intensive.png', 'intensive') : MakeProductButton(context,'assets/intensive.png', 'intensive'),
+        product=="intensive"? MakeProductButton(context,'sintensive.png', 'intensive') : MakeProductButton(context,'intensive.jpg', 'intensive'),
       ],
     );
   }

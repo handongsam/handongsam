@@ -43,6 +43,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - handongsam.png
+    - poop.png
     - intensive.jpg
     - balance.jpg
     - sintensive.png

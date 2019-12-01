@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'main.dart';
+import 'final_report.dart';
 
 class FinalHome extends StatefulWidget {
   static const routeName = '/finalHomeScreen';
@@ -9,63 +9,41 @@ class FinalHome extends StatefulWidget {
 }
 
 class FinalHomeState extends State<FinalHome> {
-  // TODO: Add a variable for Category (104)
-  double _sliderValue = 0.0;
-  bool good = false;
-  bool bad = false;
+
   @override
   Widget build(BuildContext context) {
+    double size = MediaQuery.of(context).size.width/2.2;
     return Scaffold(
       appBar: AppBar(
-        leading:
-        InkWell(
-          child: Container(
-            child: Row( children: [
-              IconButton(
-
-                icon: Icon(
-                  Icons.alarm,
-                ),
-              ),
-            ],),),
-          onTap: () =>  Navigator.of(context).pop()            ,
-        ),
-
+        leading: Container(),
+        actions: <Widget>[
+          SizedBox(width:MediaQuery.of(context).size.width/6)
+        ],
+        title : Center(child:Text("최종보고서")),
       ),
       body: Center(child: Column(
         children:[
           Container(
             padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
             child:Column(
-
               crossAxisAlignment:CrossAxisAlignment.center,
-              // mainAxisAlignment:MainAxisAlignment.start,
-
               children:[
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-
-                  child:
-                  Column(
-
+                  child: Column(
                     children:[
-                      Text('축하합니다.'),
-                      Text('최종보고서를 확인하세요'),
+                      Text('축하합니다.', style:TextStyle(fontSize: 20.0)),
+                      Text('최종보고서를 확인하세요',  style:TextStyle(fontSize: 20.0)),
                     ],
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 55),
-
-                  child:
-
-                  Row( children:[
-                    FlatButton( child: const Text('확인'),   textColor: Colors.white,
-                      color: Colors.black, onPressed: null, ),
-                    SizedBox(width: 10),
-                    FlatButton( child: const Text('계속하기'),textColor: Colors.white,
-                      color: Colors.black,  onPressed: null, ),
-                  ],
+                  child: FlatButton(
+                    child: const Text('확인'),
+                    textColor: Colors.white,
+                    color: Colors.black,
+                    onPressed: ()=> Navigator.pushNamed(context, ReportScreen.routeName),
                   ),
                 ),
               ],
@@ -73,56 +51,48 @@ class FinalHomeState extends State<FinalHome> {
           ),
           Divider(),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 75),
-
-            child:
-            Column(
+            child: Column(
               crossAxisAlignment:CrossAxisAlignment.center,
-
               children:[
-                Text('재구매를 원하십니까?'),
-                SizedBox(height: 30),
-                Row( children:[
-                  Column( children:[  InkWell(child : Image.asset('product1.JPG', width: 110, height: 130) ,
-                      onTap: (){   {
-                        Navigator.of(context)
-                            .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
-                            MaterialPageRoute<void>(
-
-                              //builder: (BuildContext context) {
-                              builder: (BuildContext context) => MyWebPage1(),
-
-                            )
-                        );
-                      }} ),
-                    Text("위드워터 밸런스"),],),
-                  SizedBox(width: 10),
-                  Column( children:[ InkWell(child : Image.asset('product2.jpg', width: 110, height: 130) ,
-                      onTap: (){     Navigator.of(context)
-                          .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
-                          MaterialPageRoute<void>(
-
-                            //builder: (BuildContext context) {
-                            builder: (BuildContext context) => MyWebPage2(),
-
-                          )
-                      );
-                      } ),
-                    Text("위드워터 인텐시브"),],),
-                ],),],
+                Container(
+                  padding : EdgeInsets.symmetric(vertical: 15),
+                  child:Text('재구매를 원하십니까?',style:TextStyle(fontSize: 20.0)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:[
+                    Column(
+                      children:[
+                        InkWell(
+                            child : Image.asset('balance.jpg', height: size, width:size,),
+                            onTap: () =>Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => MyWebPage1()))
+                        ),
+                        Text("위드워터 밸런스",style:TextStyle(fontSize: 20.0)),
+                      ],
+                    ),
+                    SizedBox(width: 10),
+                    Column(
+                      children:[
+                        InkWell(
+                            child : Image.asset('intensive.jpg', height: size, width:size),
+                            onTap: ()=>Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => MyWebPage2()))
+                        ),
+                        Text("위드워터 인텐시브",style:TextStyle(fontSize: 20.0)),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
       ),
       ),
     );
-
   }
-
 }
 
 class MyWebPage1 extends StatefulWidget {
-
   @override
   MyWebPage1State createState() => MyWebPage1State();
 }

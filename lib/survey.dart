@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 String TodayDate = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
 
 
+
+
 class Surveypage  extends StatelessWidget {
   static const routeName = '/Surveypage';
 
@@ -47,7 +49,7 @@ class Question1State extends State<Question1> {
   double _sliderValue = 0.0;
   bool good = false;
   bool bad = false;
-
+  String selectName = 'nothing';
 
   @override
   Widget build(BuildContext context) {
@@ -55,29 +57,25 @@ class Question1State extends State<Question1> {
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
-
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
+          child: Container(
+            child:  Icon(
+              Icons.arrow_back_ios,
             ),
-            Text("뒤로"),
 
-          ],),),
+
+          ),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
-            child: Container( child: Row( children: [
-              Text("다음"),
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_forward_ios,
-                ),
+            child:
+            IconButton(
+
+              icon: Icon(
+                Icons.arrow_forward_ios,
               ),
-            ],),),
+            ),
             onTap: () {         Navigator.of(context)
                 .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
                 MaterialPageRoute<void>(
@@ -116,14 +114,12 @@ class Question1State extends State<Question1> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:[
+                        //   selectName == 'happy'?
                         InkWell(
                             child :good == false ? Image.asset('happiness1.png', width: 110, height: 110) : Image.asset('shappiness.png', width: 110, height: 110), onTap: (){   setState(() {
-                          if(good == false){
-                            good= true;
-                          }
-                          else{
-                            good=false;
-                          }
+                          good= true;
+                          bad = false;
+
                         });
 
 
@@ -132,16 +128,19 @@ class Question1State extends State<Question1> {
                             .updateData({
                           'question1' : true,
                         },);
-                        } ),
+                        }
+
+                        ),
 
                         InkWell(
                             child :bad == false ? Image.asset('frown-face1.png', width: 110, height: 110) : Image.asset('sfrown-face.png', width: 110, height: 110),
                             onTap: (){   setState(() {
-                              if(bad == false){
-                                bad= true;
+                              if(bad == false ) {
+                                bad = true;
+                                good = false;
                               }
                               else{
-                                bad=false;
+                                bad = false;
                               }
                             });
                             Firestore.instance.collection("User")
@@ -227,36 +226,32 @@ class Question2State extends State<Question2> {
   bool _value3 = false;
   bool _value4 = false;
   bool _value5 = false;
+  //String SelectName = ' '
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
-
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
+          child: Container(
+            child:  Icon(
+              Icons.arrow_back_ios,
             ),
-            Text("뒤로"),
 
-          ],),),
+
+          ),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
-              child: Container( child: Row( children: [
-                Text("다음"),
-                IconButton(
+              child:
+              IconButton(
 
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                  ),
+                icon: Icon(
+                  Icons.arrow_forward_ios,
                 ),
-              ],),),
+              ),
               onTap: () {         Navigator.of(context)
                   .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
                   MaterialPageRoute<void>(
@@ -290,6 +285,11 @@ class Question2State extends State<Question2> {
                         setState(() {
                           if(_value5 == false){
                             _value5= true;
+                            _value0 = false;
+                            _value1 = false;
+                            _value2 = false;
+                            _value3 = false;
+                            _value4 = false;
                           }
                           else{
                             _value5=false;
@@ -305,6 +305,11 @@ class Question2State extends State<Question2> {
                       InkWell(child :_value0 == false ? Image.asset('food2.png', width: 130, height: 130) : Image.asset('select-food2.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
+                          _value5 = false;
+                          _value1 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value0=false;
@@ -327,6 +332,11 @@ class Question2State extends State<Question2> {
                       InkWell(child :_value1 == false ? Image.asset('food3.png', width: 130, height: 130) : Image.asset('select-food3.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value1 == false){
                           _value1= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value1=false;
@@ -342,6 +352,11 @@ class Question2State extends State<Question2> {
                       InkWell(child :_value2 == false ? Image.asset('food4.png', width: 130, height: 130) : Image.asset('select-food4.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value2 == false){
                           _value2= true;
+                          _value0 = false;
+                          _value1 = false;
+                          _value5 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value2=false;
@@ -360,6 +375,11 @@ class Question2State extends State<Question2> {
                       InkWell(child :_value3 == false ? Image.asset('food5.png', width: 130, height: 130) : Image.asset('select-food5.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value3 == false){
                           _value3= true;
+                          _value0 = false;
+                          _value1 = false;
+                          _value2 = false;
+                          _value5 = false;
+                          _value4 = false;
                         }
                         else{
                           _value3=false;
@@ -375,6 +395,11 @@ class Question2State extends State<Question2> {
                       InkWell(child :_value4 == false ? Image.asset('food6.png', width: 130, height: 130) : Image.asset('select_food6.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value4 == false){
                           _value4= true;
+                          _value0 = false;
+                          _value1 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value5 = false;
                         }
                         else{
                           _value4=false;
@@ -416,30 +441,25 @@ class Question3State extends State<Question3> {
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
-
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
+          child: Container(
+            child:  Icon(
+              Icons.arrow_back_ios,
             ),
-            Text("뒤로"),
 
-          ],),),
+
+          ),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
-              child: Container( child: Row( children: [
-                Text("다음"),
-                IconButton(
+              child:
+              IconButton(
 
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                  ),
+                icon: Icon(
+                  Icons.arrow_forward_ios,
                 ),
-              ],),),
+              ),
               onTap: () {         Navigator.of(context)
                   .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
                   MaterialPageRoute<void>(
@@ -473,6 +493,11 @@ class Question3State extends State<Question3> {
                         setState(() {
                           if(_value5 == false){
                             _value5= true;
+                            _value0 = false;
+                            _value1 = false;
+                            _value2 = false;
+                            _value3 = false;
+                            _value4 = false;
                           }
                           else{
                             _value5=false;
@@ -488,6 +513,11 @@ class Question3State extends State<Question3> {
                       InkWell(child :_value0 == false ? Image.asset('food2.png', width: 130, height: 130) : Image.asset('select-food2.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
+                          _value1 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value0=false;
@@ -510,6 +540,11 @@ class Question3State extends State<Question3> {
                       InkWell(child :_value1 == false ? Image.asset('food3.png', width: 130, height: 130) : Image.asset('select-food3.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value1 == false){
                           _value1= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value1=false;
@@ -525,6 +560,11 @@ class Question3State extends State<Question3> {
                       InkWell(child :_value2 == false ? Image.asset('food4.png', width: 130, height: 130) : Image.asset('select-food4.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value2 == false){
                           _value2= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value1 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value2=false;
@@ -543,6 +583,11 @@ class Question3State extends State<Question3> {
                       InkWell(child :_value3 == false ? Image.asset('food5.png', width: 130, height: 130) : Image.asset('select-food5.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value3 == false){
                           _value3= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value1 = false;
+                          _value4 = false;
                         }
                         else{
                           _value3=false;
@@ -558,6 +603,11 @@ class Question3State extends State<Question3> {
                       InkWell(child :_value4 == false ? Image.asset('food6.png', width: 130, height: 130) : Image.asset('select_food6.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value4 == false){
                           _value4= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value1 = false;
                         }
                         else{
                           _value4=false;
@@ -598,30 +648,25 @@ class Question4State extends State<Question4> {
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
-
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
+          child: Container(
+            child:  Icon(
+              Icons.arrow_back_ios,
             ),
-            Text("뒤로"),
 
-          ],),),
+
+          ),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
-              child: Container( child: Row( children: [
-                Text("다음"),
-                IconButton(
+              child:
+              IconButton(
 
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                  ),
+                icon: Icon(
+                  Icons.arrow_forward_ios,
                 ),
-              ],),),
+              ),
               onTap: () {         Navigator.of(context)
                   .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
                   MaterialPageRoute<void>(
@@ -655,6 +700,11 @@ class Question4State extends State<Question4> {
                         setState(() {
                           if(_value5 == false){
                             _value5= true;
+                            _value0 = false;
+                            _value1 = false;
+                            _value2 = false;
+                            _value3 = false;
+                            _value4 = false;
                           }
                           else{
                             _value5=false;
@@ -670,6 +720,11 @@ class Question4State extends State<Question4> {
                       InkWell(child :_value0 == false ? Image.asset('food2.png', width: 130, height: 130) : Image.asset('select-food2.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
+                          _value1 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value0=false;
@@ -692,6 +747,11 @@ class Question4State extends State<Question4> {
                       InkWell(child :_value1 == false ? Image.asset('food3.png', width: 130, height: 130) : Image.asset('select-food3.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value1 == false){
                           _value1= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value1=false;
@@ -707,6 +767,11 @@ class Question4State extends State<Question4> {
                       InkWell(child :_value2 == false ? Image.asset('food4.png', width: 130, height: 130) : Image.asset('select-food4.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value2 == false){
                           _value2= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value1 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value2=false;
@@ -725,6 +790,11 @@ class Question4State extends State<Question4> {
                       InkWell(child :_value3 == false ? Image.asset('food5.png', width: 130, height: 130) : Image.asset('select-food5.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value3 == false){
                           _value3= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value1 = false;
+                          _value4 = false;
                         }
                         else{
                           _value3=false;
@@ -740,6 +810,11 @@ class Question4State extends State<Question4> {
                       InkWell(child :_value4 == false ? Image.asset('food6.png', width: 130, height: 130) : Image.asset('select_food6.png', width: 130, height: 130), onTap: (){   setState(() {
                         if(_value4 == false){
                           _value4= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value1 = false;
                         }
                         else{
                           _value4=false;
@@ -772,6 +847,7 @@ class Question5State extends State<Question5> {
   bool _value2 = false;
   bool _value3 = false;
   bool _value4 = false;
+  bool _value5 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -779,30 +855,25 @@ class Question5State extends State<Question5> {
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
-
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
+          child: Container(
+            child:  Icon(
+              Icons.arrow_back_ios,
             ),
-            Text("뒤로"),
 
-          ],),),
+
+          ),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
-              child: Container( child: Row( children: [
-                Text("다음"),
-                IconButton(
+              child:
+              IconButton(
 
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                  ),
+                icon: Icon(
+                  Icons.arrow_forward_ios,
                 ),
-              ],),),
+              ),
               onTap: () {         Navigator.of(context)
                   .push( //MaterialPageRoute(builder: (context) =>DetailPage()),);
                   MaterialPageRoute<void>(
@@ -838,9 +909,14 @@ class Question5State extends State<Question5> {
                     mainAxisAlignment: MainAxisAlignment.center,
 
                     children:[
-                      InkWell(child :_value0 == false ? Image.asset('poop1.png',  width: 140, height: 130) :Image.asset('poop1.png',  width: 140, height: 130) , onTap: (){   setState(() {
+                      InkWell(child :_value0 == false ? Image.asset('poop1.png',  width: 140, height: 130) :Image.asset('spoop1.png',  width: 140, height: 130) , onTap: (){   setState(() {
                         if(_value0 == false){
                           _value0= true;
+                          _value1 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
                           _value0=false;
@@ -852,12 +928,17 @@ class Question5State extends State<Question5> {
                         'question4-1' : 1,
                       },);
                       } ),
-                      InkWell(child :_value0 == false ? Image.asset('poop2.jpg',  width: 140, height: 130) :Image.asset('poop2.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
-                        if(_value0 == false){
-                          _value0= true;
+                      InkWell(child :_value1 == false ? Image.asset('poop2.jpg',  width: 140, height: 130) :Image.asset('spoop2.png',  width: 140, height: 130) , onTap: (){   setState(() {
+                        if(_value1 == false){
+                          _value1= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
-                          _value0=false;
+                          _value1=false;
                         }
                       });
                       Firestore.instance.collection("User")
@@ -871,12 +952,17 @@ class Question5State extends State<Question5> {
                     mainAxisAlignment: MainAxisAlignment.center,
 
                     children:[
-                      InkWell(child :_value0 == false ? Image.asset('poop3.jpg',  width: 140, height: 130) :Image.asset('poop3.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
-                        if(_value0 == false){
-                          _value0= true;
+                      InkWell(child :_value2 == false ? Image.asset('poop3.jpg',  width: 140, height: 130) :Image.asset('spoop3.png',  width: 140, height: 130) , onTap: (){   setState(() {
+                        if(_value2 == false){
+                          _value2= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value1 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
-                          _value0=false;
+                          _value2=false;
                         }
                       });
                       Firestore.instance.collection("User")
@@ -885,12 +971,17 @@ class Question5State extends State<Question5> {
                         'question4-1' : 3,
                       },);
                       } ),
-                      InkWell(child :_value0 == false ? Image.asset('poop4.jpg',  width: 140, height: 130) :Image.asset('poop4.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
-                        if(_value0 == false){
-                          _value0= true;
+                      InkWell(child :_value3 == false ? Image.asset('poop4.jpg',  width: 140, height: 130) :Image.asset('spoop4.png',  width: 140, height: 130) , onTap: (){   setState(() {
+                        if(_value3 == false){
+                          _value3= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value1 = false;
+                          _value4 = false;
                         }
                         else{
-                          _value0=false;
+                          _value3=false;
                         }
                       });
                       Firestore.instance.collection("User")
@@ -903,12 +994,17 @@ class Question5State extends State<Question5> {
                     mainAxisAlignment: MainAxisAlignment.center,
 
                     children:[
-                      InkWell(child :_value0 == false ? Image.asset('poop5.jpg',  width: 140, height: 130) :Image.asset('poop5.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
-                        if(_value0 == false){
-                          _value0= true;
+                      InkWell(child :_value4 == false ? Image.asset('poop5.jpg',  width: 140, height: 130) :Image.asset('spoop5.png',  width: 140, height: 130) , onTap: (){   setState(() {
+                        if(_value4 == false){
+                          _value4= true;
+                          _value0 = false;
+                          _value5 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value1 = false;
                         }
                         else{
-                          _value0=false;
+                          _value4=false;
                         }
                       });
                       Firestore.instance.collection("User")
@@ -917,12 +1013,17 @@ class Question5State extends State<Question5> {
                         'question4-1' : 5,
                       },);
                       } ),
-                      InkWell(child :_value0 == false ? Image.asset('poop6.jpg',  width: 140, height: 130) :Image.asset('poop6.jpg',  width: 140, height: 130) , onTap: (){   setState(() {
-                        if(_value0 == false){
-                          _value0= true;
+                      InkWell(child :_value5 == false ? Image.asset('poop6.png',  width: 140, height: 130) :Image.asset('spoop6.png',  width: 140, height: 130) , onTap: (){   setState(() {
+                        if(_value5 == false){
+                          _value5= true;
+                          _value0 = false;
+                          _value1 = false;
+                          _value2 = false;
+                          _value3 = false;
+                          _value4 = false;
                         }
                         else{
-                          _value0=false;
+                          _value5=false;
                         }
                       });
                       Firestore.instance.collection("User")
@@ -957,30 +1058,25 @@ class Question6State extends State<Question6> {
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
-
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
+          child: Container(
+            child:  Icon(
+              Icons.arrow_back_ios,
             ),
-            Text("뒤로"),
 
-          ],),),
+
+          ),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
-            child: Container( child: Row( children: [
-              Text("다음"),
-              IconButton(
+            child:
+            IconButton(
 
-                icon: Icon(
-                  Icons.arrow_forward_ios,
-                ),
+              icon: Icon(
+                Icons.arrow_forward_ios,
               ),
-            ],),),
+            ),
             onTap: () {
 
               Navigator.of(context)
@@ -1119,30 +1215,26 @@ class Question7State extends State<Question7> {
       appBar: AppBar(
         leading:
         InkWell(
-          child: Container( child: Row( children: [
-            IconButton(
-
-              icon: Icon(
-                Icons.arrow_back_ios,
-              ),
+          child: Container(
+            child:  Icon(
+              Icons.arrow_back_ios,
             ),
-            Text("뒤로"),
 
-          ],),),
+
+          ),
           onTap: () =>  Navigator.of(context).pop()            ,
         ),
 
         actions: <Widget>[
           InkWell(
-            child: Container( child: Row( children: [
-              Text("다음"),
-              IconButton(
+            child:
+            IconButton(
 
-                icon: Icon(
-                  Icons.arrow_forward_ios,
-                ),
+              icon: Icon(
+                Icons.arrow_forward_ios,
               ),
-            ],),),
+            ),
+
             onTap: () {
               Firestore.instance.collection("User")
                   .document(CurrentUid).collection('survey').document(TodayDate)
@@ -1184,6 +1276,7 @@ class Question7State extends State<Question7> {
                             child :good == false ? Image.asset('happiness1.png', width: 110, height: 110) : Image.asset('shappiness.png', width: 110, height: 110), onTap: (){   setState(() {
                           if(good == false){
                             good= true;
+                            bad = false;
                           }
                           else{
                             good=false;
@@ -1201,6 +1294,7 @@ class Question7State extends State<Question7> {
                             child :bad == false ? Image.asset('frown-face1.png', width: 110, height: 110) : Image.asset('sfrown-face.png', width: 110, height: 110), onTap: (){   setState(() {
                           if(bad == false){
                             bad= true;
+                            good = false;
                           }
                           else{
                             bad=false;

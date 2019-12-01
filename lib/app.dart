@@ -9,6 +9,7 @@ import 'survey_inform.dart';
 import 'survey.dart';
 import 'final_report.dart';
 import 'home_after.dart';
+import 'calender.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class App extends StatelessWidget {
@@ -26,6 +27,7 @@ class App extends StatelessWidget {
           Surveypage.routeName : (context)=>Surveypage(),
           ReportScreen.routeName : (context)=>ReportScreen(),
           FinalHome.routeName : (context) => FinalHome(),
+          CalenderPage.routeName :(context) =>CalenderPage(),
         },
 
         title: 'HandongSam',
@@ -49,7 +51,6 @@ class App extends StatelessWidget {
     if (settings.name != '/login') {
       return null;
     }
-
     return MaterialPageRoute<void>(
       settings: settings,
       builder: (BuildContext context) => LoginPage(),

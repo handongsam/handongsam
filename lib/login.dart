@@ -39,16 +39,17 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 80.0),
                     Column(
                       children: <Widget>[
-                        //Image.asset('assets/diamond.png'),
+                        Image.asset('handongsam.png', height: MediaQuery.of(context).size.width/5,),
                         SizedBox(height: 16.0),
-                        Text('HandongSam'),
+                        Text('HandongSam', style:TextStyle(fontSize: 20.0)),
                       ],
                     ),
                   ],
                 ),
               ),
+              SizedBox(height: 40.0,),
               RaisedButton(
-                child: Text('GOOGLE Sign In'),
+                child: Text('GOOGLE Sign In',style:TextStyle(fontSize: 15.0)),
                 onPressed: () async{
                   CurrentUid = await _signIn();
                 },
@@ -76,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
       if (authResult.additionalUserInfo.isNewUser) {
         final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
         print("new user :  " + user.uid + user.displayName);
-
         Navigator.pushNamed(context, CreateAccount.routeName);
         return user.uid;
       }

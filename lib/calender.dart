@@ -5,13 +5,13 @@ import 'login.dart';
 import 'survey.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class SurveyInform extends StatefulWidget{
-  static const routeName = '/sruveyInformScreen';
+class CalenderPage extends StatefulWidget{
+  static const routeName = '/calenderPageState';
   @override
-  SurveyInformState createState() => SurveyInformState();
+  CalenderPageState createState() => CalenderPageState();
 }
 
-class SurveyInformState extends State<SurveyInform> {
+class CalenderPageState extends State<CalenderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,8 +131,8 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
               padding: const EdgeInsets.all(0.0),
               child: Container(
                 decoration: const BoxDecoration(
-                    color: Colors.blueAccent,
-                  ),
+                  color: Colors.blueAccent,
+                ),
                 padding: const EdgeInsets.all(10.0),
                 child: const Text(
                     '오늘의 장일기 시작',
