@@ -28,21 +28,22 @@ class CreateAccountState extends State<CreateAccount> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon : Icon(Icons.arrow_back_ios),
+          icon : Icon(Icons.arrow_back_ios, color: Colors.black54, size: 18.0,),
+
           onPressed: (){
             Navigator.pop(context);
           },
         ),
         title: Center(
           child:const Text(
-            '개인정보 입력',
+            '개인정보 입력', style:TextStyle(fontSize: 17.0),
           ),
         ),
         actions: <Widget>[
           Row(
             children: <Widget>[
               IconButton(
-                icon : Icon(Icons.arrow_forward_ios),
+                icon : Icon(Icons.arrow_forward_ios, color: Colors.black54, size: 18.0,),
                 onPressed: () async{
                   _setValue();
                   await _makeUserInform(context);
@@ -118,7 +119,10 @@ class MakeTextFieldListState extends State<MakeTextFieldList>{
     return ListView(
       children: <Widget>[
         _makeText(context,'이름','Name', false, _nameController,TextInputType.text, name),
+        SizedBox(height: 3),
         _makeText(context,'휴대폰번호 뒷자리','Phoen Number', false, _phoneNumberController,TextInputType.text, phoneNumber),
+        SizedBox(height: 3),
+
         _makeText(context,'체지방률(%)','Fat(%)', false, _bodyFatPercentageController,TextInputType.number, bodyFatPercentage),
       ],
     );
@@ -173,19 +177,19 @@ class ChooseProductState extends State<ChooseProduct> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon : Icon(Icons.arrow_back_ios),
+          icon : Icon(Icons.arrow_back_ios, color: Colors.black54, size: 18.0,),
           onPressed: (){
             Navigator.pop(context);
           },
         ),
         title: Center(
-          child:const Text('제품 선택'),
+          child:const Text('제품 선택',style:TextStyle(fontSize: 17.0)),
         ),
         actions: <Widget>[
           Row(
             children: <Widget>[
               IconButton(
-                icon : Icon(Icons.arrow_forward_ios),
+                icon : Icon(Icons.arrow_forward_ios, color: Colors.black54, size: 18.0,),
                 onPressed: () {
                   _updateProduct(context, product);
                   Navigator.pushNamed(context, AlarmInform.routeName);

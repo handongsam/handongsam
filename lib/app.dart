@@ -27,7 +27,7 @@ class App extends StatelessWidget {
           Surveypage.routeName : (context)=>Surveypage(),
           ReportScreen.routeName : (context)=>ReportScreen(),
           FinalHome.routeName : (context) => FinalHome(),
-          CalenderPage.routeName :(context) =>CalenderPage(),
+          CalenderScreen.routeName :(context) =>CalenderScreen(),
         },
 
         title: 'HandongSam',

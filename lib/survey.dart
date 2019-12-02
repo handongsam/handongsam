@@ -59,7 +59,7 @@ class Question1State extends State<Question1> {
         InkWell(
           child: Container(
             child:  Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0
             ),
 
 
@@ -73,7 +73,7 @@ class Question1State extends State<Question1> {
             IconButton(
 
               icon: Icon(
-                Icons.arrow_forward_ios,
+                Icons.arrow_forward_ios,color: Colors.black54, size: 18.0
               ),
             ),
             onTap: () {         Navigator.of(context)
@@ -235,7 +235,7 @@ class Question2State extends State<Question2> {
         InkWell(
           child: Container(
             child:  Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0
             ),
 
 
@@ -249,7 +249,7 @@ class Question2State extends State<Question2> {
               IconButton(
 
                 icon: Icon(
-                  Icons.arrow_forward_ios,
+                  Icons.arrow_forward_ios,color: Colors.black54, size: 18.0
                 ),
               ),
               onTap: () {         Navigator.of(context)
@@ -443,7 +443,7 @@ class Question3State extends State<Question3> {
         InkWell(
           child: Container(
             child:  Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0
             ),
 
 
@@ -457,7 +457,7 @@ class Question3State extends State<Question3> {
               IconButton(
 
                 icon: Icon(
-                  Icons.arrow_forward_ios,
+                  Icons.arrow_forward_ios,color: Colors.black54, size: 18.0
                 ),
               ),
               onTap: () {         Navigator.of(context)
@@ -650,7 +650,7 @@ class Question4State extends State<Question4> {
         InkWell(
           child: Container(
             child:  Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0
             ),
 
 
@@ -664,7 +664,7 @@ class Question4State extends State<Question4> {
               IconButton(
 
                 icon: Icon(
-                  Icons.arrow_forward_ios,
+                  Icons.arrow_forward_ios,color: Colors.black54, size: 18.0
                 ),
               ),
               onTap: () {         Navigator.of(context)
@@ -857,7 +857,7 @@ class Question5State extends State<Question5> {
         InkWell(
           child: Container(
             child:  Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0
             ),
 
 
@@ -871,7 +871,7 @@ class Question5State extends State<Question5> {
               IconButton(
 
                 icon: Icon(
-                  Icons.arrow_forward_ios,
+                  Icons.arrow_forward_ios,color: Colors.black54, size: 18.0
                 ),
               ),
               onTap: () {         Navigator.of(context)
@@ -1060,7 +1060,7 @@ class Question6State extends State<Question6> {
         InkWell(
           child: Container(
             child:  Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0
             ),
 
 
@@ -1074,7 +1074,7 @@ class Question6State extends State<Question6> {
             IconButton(
 
               icon: Icon(
-                Icons.arrow_forward_ios,
+                Icons.arrow_forward_ios,color: Colors.black54, size: 18.0
               ),
             ),
             onTap: () {
@@ -1217,7 +1217,7 @@ class Question7State extends State<Question7> {
         InkWell(
           child: Container(
             child:  Icon(
-              Icons.arrow_back_ios,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0
             ),
 
 
@@ -1226,15 +1226,18 @@ class Question7State extends State<Question7> {
         ),
 
         actions: <Widget>[
+          Row(children:[
+            Text("완료",style:TextStyle(fontSize: 15.0, color: Colors.black87)),
           InkWell(
             child:
+
             IconButton(
 
               icon: Icon(
-                Icons.arrow_forward_ios,
+                Icons.arrow_forward_ios,color: Colors.black54, size: 18.0,
               ),
-            ),
 
+),
             onTap: () {
               Firestore.instance.collection("User")
                   .document(CurrentUid).collection('survey').document(TodayDate)
@@ -1242,9 +1245,9 @@ class Question7State extends State<Question7> {
                 'complete' : true,
               },);
               Navigator.pushNamed(context, HomePage.routeName);
-            }     ,
-          ),
+            }
 
+          ),],),
         ],
       ),
       body:

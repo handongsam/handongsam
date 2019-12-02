@@ -19,12 +19,11 @@ class FinalHomeState extends State<FinalHome> {
         actions: <Widget>[
           SizedBox(width:MediaQuery.of(context).size.width/6)
         ],
-        title : Center(child:Text("최종보고서")),
+        title : Center(child:Text("HandongSam",style : TextStyle(fontSize: 17.0),)),
       ),
-      body: Center(child: Column(
-        children:[
+      body: SafeArea( child: Column( children:[
           Container(
-            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             child:Column(
               crossAxisAlignment:CrossAxisAlignment.center,
               children:[
@@ -32,8 +31,8 @@ class FinalHomeState extends State<FinalHome> {
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                   child: Column(
                     children:[
-                      Text('축하합니다.', style:TextStyle(fontSize: 20.0)),
-                      Text('최종보고서를 확인하세요',  style:TextStyle(fontSize: 20.0)),
+                      Text('축하합니다.', style:TextStyle(fontSize: 17.0)),
+                      Text('최종보고서를 확인하세요',  style:TextStyle(fontSize: 17.0), ),
                     ],
                   ),
                 ),
@@ -55,8 +54,8 @@ class FinalHomeState extends State<FinalHome> {
               crossAxisAlignment:CrossAxisAlignment.center,
               children:[
                 Container(
-                  padding : EdgeInsets.symmetric(vertical: 15),
-                  child:Text('재구매를 원하십니까?',style:TextStyle(fontSize: 20.0)),
+                  padding : EdgeInsets.symmetric(vertical: 16),
+                  child:Text('재구매를 원하십니까?',style:TextStyle(fontSize: 17.0)),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +66,7 @@ class FinalHomeState extends State<FinalHome> {
                             child : Image.asset('balance.jpg', height: size, width:size,),
                             onTap: () =>Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => MyWebPage1()))
                         ),
-                        Text("위드워터 밸런스",style:TextStyle(fontSize: 20.0)),
+                        Text("위드워터 밸런스",style:TextStyle(fontSize: 17.0)),
                       ],
                     ),
                     SizedBox(width: 10),
@@ -77,7 +76,7 @@ class FinalHomeState extends State<FinalHome> {
                             child : Image.asset('intensive.jpg', height: size, width:size),
                             onTap: ()=>Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => MyWebPage2()))
                         ),
-                        Text("위드워터 인텐시브",style:TextStyle(fontSize: 20.0)),
+                        Text("위드워터 인텐시브",style:TextStyle(fontSize: 17.0)),
                       ],
                     ),
                   ],
@@ -134,10 +133,10 @@ class MyWebPage2State extends State<MyWebPage2> {
     return Scaffold(
 
         appBar: new AppBar(
-          title: new Text("Handong Sam"),
+          title: new Text("Handong Sam",style : TextStyle(fontSize: 18.0),),
           leading: IconButton(
             icon: Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_ios,color: Colors.black54, size: 18.0,
               semanticLabel: 'Webpage',
             ),
             onPressed: () {

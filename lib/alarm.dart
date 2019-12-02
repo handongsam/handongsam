@@ -35,17 +35,17 @@ class AlarmState extends State<Alarm> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon : Icon(Icons.arrow_back_ios),
+          icon : Icon(Icons.arrow_back_ios, color: Colors.black54, size: 18.0,),
           onPressed: (){
             _updateAlarm(context);
             Navigator.pop(context);
           },
         ),
         title: Center(
-          child : const Text("맛알람 설정"),
+          child : const Text("맛알람 설정", style:TextStyle(fontSize: 17.0)),
         ),
         actions: <Widget>[
-          args.fromWhere == "home"? Container() :
+          args.fromWhere == "home"? Container(width: 60.0,) :
           Row(
             children: <Widget>[
               IconButton(
@@ -105,7 +105,7 @@ class AlarmSettingState extends State<AlarmSetting>{
 
   ListTile SetAlarm(BuildContext context){
     return ListTile(
-      leading:Text("알림", style:TextStyle(fontSize: 17.0)),
+      leading:Text("알림", style:TextStyle(fontSize: 16.0)),
       title :Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -117,7 +117,7 @@ class AlarmSettingState extends State<AlarmSetting>{
 
   ListTile SetAlarmTime(BuildContext context){
     return ListTile(
-      leading:Text("복용시간", style:TextStyle(fontSize: 17.0)),
+      leading:Text("복용시간", style:TextStyle(fontSize: 16.0)),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -126,7 +126,7 @@ class AlarmSettingState extends State<AlarmSetting>{
               _selectTime(context);
             },
             padding: EdgeInsets.all(0.0),
-            child : Text(time,style:TextStyle(fontSize: 17.0, color: Colors.blueAccent)),
+            child : Text(time,style:TextStyle(fontSize: 16.0, color: Colors.indigo[700])),
           ),
         ],
       ),
@@ -150,7 +150,7 @@ class AlarmSettingState extends State<AlarmSetting>{
 
   ListTile SetBeforeTime(BuildContext context){
     return ListTile(
-      leading:Text("알람", style:TextStyle(fontSize: 17.0)),
+      leading:Text("알람", style:TextStyle(fontSize: 16.0)),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -168,7 +168,7 @@ class AlarmSettingState extends State<AlarmSetting>{
             },
 
             padding: EdgeInsets.all(0.0),
-            child : Text(minute, style:TextStyle(fontSize: 17.0, color: Colors.blueAccent)),
+            child : Text(minute, style:TextStyle(fontSize: 16.0, color: Colors.indigo[700])),
           ),
         ],
       ),
@@ -199,7 +199,7 @@ class AlarmSettingState extends State<AlarmSetting>{
 
   ListTile SetRealarm() {
     return ListTile(
-      leading: Text("다시알림", style:TextStyle(fontSize: 17.0)),
+      leading: Text("다시알림", style:TextStyle(fontSize: 16.0)),
       title :Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

@@ -28,7 +28,7 @@ class SurveyInformState extends State<SurveyInform> {
               IconButton(
                 icon : Icon(Icons.arrow_forward_ios),
                 onPressed: () {
-                  Navigator.of(context).push( MaterialPageRoute(builder: (context) =>BeforeStartSurvey()));
+                  Navigator.of(context).push( MaterialPageRoute(builder: (context) =>Surveypage()));
                 },
               ),
             ],
@@ -49,7 +49,7 @@ class SurveyInformState extends State<SurveyInform> {
           margin: const EdgeInsets.only(bottom:30.0),
           child: Icon(
             Icons.description,
-            size:70.0,
+            size:50.0,
           ),
         ),
 
@@ -62,12 +62,12 @@ class SurveyInformState extends State<SurveyInform> {
                 children: <Widget>[
                   Text(
                     "장일기",
-                    style: TextStyle(color: Colors.blueAccent, fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.indigo[700], fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  Text("는 하루 동안의 배변과", style: TextStyle(fontSize: 18),),
+                  Text("는 하루 동안의 배변과", style: TextStyle(fontSize: 16),),
                 ],
               ),
-              Text("식단을 기록합니다.", style: TextStyle(fontSize: 18),),
+              Text("식단을 기록합니다.", style: TextStyle(fontSize: 16),),
             ],
           ),
         ),
@@ -75,8 +75,8 @@ class SurveyInformState extends State<SurveyInform> {
           margin: const EdgeInsets.only(bottom: 10.0),
           child : Column(
             children: <Widget>[
-              Text("습관이 형성되는", style: TextStyle(fontSize: 18),),
-              Text("14일동안 매일 진행되며", style: TextStyle(fontSize: 18),),
+              Text("습관이 형성되는", style: TextStyle(fontSize: 16),),
+              Text("14일동안 매일 진행되며", style: TextStyle(fontSize: 16),),
             ],
           ),
         ),
@@ -84,8 +84,8 @@ class SurveyInformState extends State<SurveyInform> {
           margin: const EdgeInsets.only(bottom: 10.0),
           child : Column(
             children: <Widget>[
-              Text("14일 이후 결과 보고서를 통해", style: TextStyle(fontSize: 18),),
-              Text("장의 변화를 확인하실 수 있습니다.", style: TextStyle(fontSize: 18),),
+              Text("14일 이후 결과 보고서를 통해", style: TextStyle(fontSize: 16),),
+              Text("장의 변화를 확인하실 수 있습니다.", style: TextStyle(fontSize: 16),),
             ],
           ),
         ),
@@ -118,10 +118,10 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
           children: <Widget>[
             Icon(
               Icons.description,
-              size:70.0,
+              size:50.0,
             ),
             SizedBox(height:20.0),
-            Text("7일째" ,style:TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
+            Text("7일째" ,style:TextStyle(fontSize: 17.0)),
             SizedBox(height:40),
             RaisedButton(
               onPressed: () async{
@@ -131,12 +131,12 @@ class BeforeStartSurveyState extends State<BeforeStartSurvey> {
               padding: const EdgeInsets.all(0.0),
               child: Container(
                 decoration: const BoxDecoration(
-                    color: Colors.blueAccent,
+                    color: Colors.indigo,
                   ),
                 padding: const EdgeInsets.all(10.0),
                 child: const Text(
                     '오늘의 장일기 시작',
-                    style: TextStyle(fontSize: 17.0)
+                    style: TextStyle(fontSize: 16.0)
                 ),
               ),
             ),
